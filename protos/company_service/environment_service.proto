@@ -1,0 +1,46 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "company.proto";
+import "companies_service.proto";
+
+service EnvironmentService {
+    rpc Create(CreateEnvironmentRequest) returns (Environment) {}
+    rpc GetList(GetEnvironmentListRequest) returns (GetEnvironmentListResponse) {}
+    rpc GetById(EnvironmentPrimaryKey) returns (Environment) {}
+    rpc Update(Environment) returns (Environment) {}
+    rpc Delete(EnvironmentPrimaryKey) returns (Empty) {}
+    rpc CreateV2(CreateEnvironmentRequest) returns (Environment) {}
+}
+
+message CreateEnvironmentRequest {
+    string project_id = 1;
+    string name = 2;
+    string display_color = 3;
+    string description = 4;
+    string company_id = 5;
+    string client_type_id = 6;
+    string role_id = 7;
+    string user_id = 8;
+}
+
+message GetEnvironmentListRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    repeated string ids = 5;
+    string user_id = 6;
+    bool with_client_type = 7;
+}
+
+message GetEnvironmentListResponse {
+    int32 count = 1;
+    repeated EnvironmentWithResources environments = 2;
+}
+
+message EnvironmentPrimaryKey {
+    string id = 1;
+}

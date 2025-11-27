@@ -1,0 +1,73 @@
+syntax="proto3";
+
+package transcoder_service;
+option go_package="genproto/transcoder_service";
+
+import "google/protobuf/empty.proto";
+
+service PipelineService {
+    rpc Create(CreatePipelineRequest) returns (google.protobuf.Empty) {}
+    rpc GetList(GetListPipelineRequest) returns (GetListPipelineResponse) {}
+    
+    rpc CreateCompanyAndProject(CreateCompanyAndProjectRequest) returns (google.protobuf.Empty) {}
+}
+
+message Pipeline {
+    string id = 1;
+    string project_id = 2;
+    string stage = 3;
+    string stage_status = 4;
+    string fail_description = 5;
+    string input_url = 6;
+    string output_key = 7;
+    string output_path = 8;
+    float size_kb = 9;
+    float transcode_duration_seconds = 10;
+    float upload_duration_seconds = 11;
+    string max_resolution = 12;
+    repeated string resolutions = 13;
+    float video_duration = 14;
+    float preparation_duration_seconds = 15;
+    string key_id = 16;
+    bool webhook_status = 17;
+    int32 webhook_retry_count = 18;
+    string created_at = 19;
+    string updated_at = 20;
+}
+
+message CreatePipelineRequest {
+    string input_url = 1;
+    string output_key = 2;
+    string output_path = 3;
+    string max_resolution = 4;
+    string project_id = 5;
+    repeated string resolutions = 6;
+    string bucket_name = 7;
+    string language = 8;
+    string language_code = 9;
+    string key_id = 10;
+    string field_slug = 11;
+    string table_slug = 12;
+}
+
+message GetListPipelineRequest {
+    int32 page = 1;
+    int32 limit = 2;
+    string project_id = 3;
+    string order_by = 4;
+    string order = 5;
+    string from_date = 6;
+    string to_date = 7;
+    int32 webhook_status = 8;
+    string search = 9;
+}
+
+message GetListPipelineResponse {
+    int32 count = 1;
+    repeated Pipeline pipelines = 2;
+}
+
+message CreateCompanyAndProjectRequest {
+    string project_id = 1;
+    string title = 2;
+}

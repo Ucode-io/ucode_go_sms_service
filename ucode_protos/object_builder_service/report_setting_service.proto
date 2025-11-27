@@ -1,0 +1,202 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+
+service ReportSettingService {
+
+    rpc GetByIdReportSetting(AppReportSettingPrimaryKey) returns (AppReportSetting) {}
+    rpc GetListReportSetting(GetListReportSettingRequest) returns (GetListReportSettingResponse) {}
+    rpc UpsertReportSetting(UpsertAppReportSettingRequest) returns (AppReportSetting) {}
+    rpc DeleteReportSetting(AppReportSettingPrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc SavePivotTemplate(SavePivotTemplateRequest) returns (PivotTemplateSetting) {}
+    rpc GetByIdPivotTemplate(PivotTemplatePrimaryKey) returns (PivotTemplateSetting) {}
+    rpc GetListPivotTemplate(GetListPivotTemplateRequest) returns (GetListPivotTemplateResponse) {}
+    rpc UpsertPivotTemplate(PivotTemplateSetting) returns (PivotTemplateSetting) {}
+    rpc RemovePivotTemplate(RemovePivotTemplateSettingRequest) returns (google.protobuf.Empty) {}
+}
+
+// Report settings messages
+message AppReportSettingPrimaryKey {
+    string id = 1;
+    string resource_environment_id = 2;
+}
+
+message TableSetting {
+    string id = 1;
+    string label = 2;
+    string slug = 3;
+    int64 fields_length = 4;
+    string date_field_slug = 5;
+    string inside_relation_table_slug = 6;
+    repeated TableFieldSetting table_field_settings = 7;
+    repeated string table_field_settings_ids = 8;
+    google.protobuf.Struct attributes = 9;
+}
+
+message TableDataMessage {
+    string id = 1;
+    string label = 2;
+    string slug = 3;
+}
+
+message TableFieldSetting {
+    string label = 1;
+    string table_slug = 2;
+    string field_id = 3;
+    string field_slug = 4;
+    string field_type = 5;
+    int64 field_index = 6;
+    bool checked = 7;
+    repeated ViewField view_fields = 8;
+    TableDataMessage table_from = 9;
+    TableDataMessage table_to = 10;
+    google.protobuf.Struct attributes = 11;
+    string aggregate_formula = 12;
+	int64 order_number = 13;	
+}
+
+message ViewField {
+    string slug = 1;
+    string type = 2;
+}
+
+message FilterSetting {
+    string label = 1;
+    string slug = 2;
+    string field_id = 3;
+    TableFieldSetting field = 4;
+}
+
+message ValueSetting {
+    string label = 1;
+    repeated TableSetting objects = 2;
+}
+
+message RowRelation {
+    string label = 1;
+    repeated TableSetting objects = 2;
+}
+
+message AppReportSetting {
+    string id = 1;
+    string main_table_label = 3;
+    string main_table_slug = 4;
+    repeated TableSetting rows = 5;
+    repeated RowRelation rows_relation = 6;
+    repeated TableSetting columns = 7;
+    repeated ValueSetting values = 8;
+    repeated FilterSetting filters = 9;
+    repeated TableSetting defaults = 10;
+}
+
+message UpsertAppReportSettingRequest {
+    string id = 1;
+    string resource_environment_id = 2;
+    string main_table_label = 3;
+    string main_table_slug = 4;
+    repeated TableSetting rows = 5;
+    repeated RowRelation rows_relation = 6;
+    repeated TableSetting columns = 7;
+    repeated ValueSetting values = 8;
+    repeated FilterSetting filters = 9;
+    repeated TableSetting defaults = 10;
+}
+
+message GetListReportSettingRequest {
+    string resource_environment_id = 1;
+    int32 offset = 2;
+    int32 limit = 3;
+}
+
+message GetListReportSettingResponse {
+    int64 count = 1;
+    repeated AppReportSetting report_settings = 2;
+}
+
+// Template messages
+message PivotTemplatePrimaryKey {
+    string id = 1;
+    string resource_environment_id = 2;
+    string from_date = 3;
+    string to_date = 4;
+}
+
+message SavePivotTemplateRequest {
+    string resource_environment_id = 1;
+    string pivot_table_slug = 2;
+    string from_date = 3;
+    string to_date = 4;
+    string status = 5;
+    string clone_id = 6;
+    string report_setting_id = 7;
+}
+
+message PivotTemplateSetting {
+    string id = 1;
+    string resource_environment_id = 2;
+    string pivot_table_slug = 3;
+    string main_table_label = 4;
+    string main_table_slug = 5;
+    string from_date = 6;
+    string to_date = 7;
+    string status = 8;
+    repeated PivotTemplateTableSetting rows = 9;
+    repeated PivotTemplateRowRelation rows_relation = 10;
+    repeated PivotTemplateTableSetting columns = 11;
+    repeated ValuePivotTemplateSetting values = 12;
+    repeated FilterPivotTemplateSetting filters = 13;
+    repeated PivotTemplateTableSetting defaults = 14;
+    string report_setting_id = 15;
+    string instance_id = 16;
+}
+
+message PivotTemplateTableSetting {
+    string id = 1;
+    string label = 2;
+    string slug = 3;
+    bool join = 4;
+    int64 order_number = 5;
+    bool checked = 6;
+    string inside_relation_table_slug = 7;
+    repeated TableFieldSetting table_field_settings = 8;
+}
+
+message PivotTemplateRowRelation {
+    string label = 1;
+    int64 order_number = 2;
+    repeated PivotTemplateTableSetting objects = 3;
+}
+
+message ValuePivotTemplateSetting {
+    string label = 1;
+    int64 order_number = 2;
+    repeated TableSetting objects = 3;
+}
+
+message FilterPivotTemplateSetting {
+    string label = 1;
+    string slug = 2;
+    string field_id = 3;
+    repeated string table_guids = 4;
+}
+
+message RemovePivotTemplateSettingRequest {
+    string id = 1;
+    string resource_environment_id = 2;
+}
+
+message GetListPivotTemplateRequest {
+    string resource_environment_id = 1;
+    string status = 2; // history, saved
+}
+
+message GetListPivotTemplateResponse {
+    int64 count = 1;
+    repeated PivotTemplateSetting pivot_templates = 2;
+}

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package genproto;
+option go_package="genproto/sms_service";
+
+
+message Sms {
+  string id = 1;
+  string created_at = 2;
+  string text = 3;
+  string recipient = 4;
+  string expires_at = 5;
+  string otp = 6;
+  string type = 7;
+  int64 send_count = 8;
+  string dev_email = 9;
+  string dev_email_password = 10;
+  string originator = 11;
+  string service_type = 12;
+}
+
+message GenerateOtp {
+  string phone_number = 1;
+  string expires_at = 2;
+  string otp = 3;
+  string sms_id = 4;
+  string receiver_type = 5;
+}
+
+message ConfirmOtpRequest {
+  string sms_id = 1;
+  string otp = 2;
+}
+
+message GetSmsRequest {
+  string sms_id = 1;
+}

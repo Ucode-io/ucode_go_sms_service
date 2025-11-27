@@ -1,0 +1,212 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service MenuService {
+    rpc Create(CreateMenuRequest) returns (Menu) {}
+    rpc GetByID(MenuPrimaryKey) returns (Menu) {}
+    rpc GetByLabel(MenuPrimaryKey) returns (GetAllMenusResponse) {}
+    rpc GetAll(GetAllMenusRequest) returns (GetAllMenusResponse) {}
+    rpc Update(Menu) returns (Menu) {}
+    rpc Delete(MenuPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc UpdateMenuOrder(UpdateMenuOrderRequest) returns (google.protobuf.Empty) {}
+
+    rpc CreateMenuSettings(CreateMenuSettingsRequest) returns (MenuSettings) {}
+    rpc GetAllMenuSettings(GetAllMenuSettingsRequest) returns (GetAllMenuSettingsResponse) {}
+    rpc GetByIDMenuSettings(MenuSettingPrimaryKey) returns (MenuSettings) {}
+    rpc UpdateMenuSettings(UpdateMenuSettingsRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteMenuSettings(MenuSettingPrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc CreateMenuTemplate(CreateMenuTemplateRequest) returns (MenuTemplate) {}
+    rpc GetAllMenuTemplate(GetAllMenuSettingsRequest) returns (GatAllMenuTemplateResponse) {}
+    rpc GetByIDMenuTemplate(MenuSettingPrimaryKey) returns (MenuTemplate) {}
+    rpc UpdateMenuTemplate(UpdateMenuTemplateRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteMenuTemplate(MenuSettingPrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc GetWikiFolder(GetWikiFolderRequest) returns (GetAllMenusResponse) {}
+}
+
+// Menu templates
+message CreateMenuTemplateRequest {
+    string background = 1;
+    string active_background = 2;
+    string text = 3;
+    string active_text = 4;
+    string project_id = 5;
+    string title = 6;
+}
+
+message GatAllMenuTemplateResponse {
+    repeated MenuTemplate menu_templates = 1;
+    int32 count = 2;
+}
+
+message MenuTemplate {
+    string id = 1;
+    string background = 2;
+    string active_background = 3;
+    string text = 4;
+    string active_text = 5;
+    string title = 6;
+}
+
+message UpdateMenuTemplateRequest {
+    string id = 1;
+    string background = 2;
+    string active_background = 3;
+    string text = 4;
+    string active_text = 5;
+    string project_id = 6;
+    string title = 7;
+}
+
+
+// Menu settings
+message UpdateMenuSettingsRequest {
+    string id = 1;
+    string icon_style = 2;
+    string icon_size = 3;
+    string menu_template_id = 4;
+    string project_id = 5;
+    string user_id = 6;
+}
+
+message GetAllMenuSettingsResponse {
+    repeated MenuSettings menu_settings = 1;
+    int32 count = 2;
+}
+
+message MenuSettingPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string template_id = 3;
+    string user_id = 4;
+}
+
+message  GetAllMenuSettingsRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string project_id = 3;
+}
+
+message CreateMenuSettingsRequest {
+    string icon_style = 1;
+    string icon_size = 2;
+    string project_id = 3;
+    string menu_template_id = 4;
+    string user_id = 5;
+}
+
+message MenuSettings {
+    string id = 1;
+    string icon_style = 2;
+    string icon_size = 3;
+    string menu_template_id = 4;
+    string user_id = 5;
+    MenuTemplate menu_template = 6;
+}
+
+// Menu
+message CreateMenuRequest {
+    string label = 1;
+    string icon = 2;
+    string table_id = 3;
+    string layout_id = 4;
+    string parent_id = 5;
+    string type = 6;
+    string project_id = 7;
+    string microfrontend_id = 8;
+    string webpage_id = 9;
+    google.protobuf.Struct attributes = 10;
+    string wiki_id = 11;
+    bool is_visible = 12;
+    string env_id = 13;
+    string id = 14;
+    bool new_router = 15;
+}
+
+message Menu {
+    string label = 1;
+    string icon = 2;
+    string table_id = 3;
+    string layout_id = 4;
+    string parent_id = 5;
+    string type = 6;
+    string id = 7;
+    string project_id = 8;
+    string microfrontend_id = 9;
+    int32 order = 10;
+    string webpage_id = 11;
+    google.protobuf.Struct attributes = 12;
+    string wiki_id = 13;
+    bool is_visible = 14;
+    bool is_static = 15;
+    google.protobuf.Struct data = 16;
+    string env_id = 17;
+}
+
+message MenuForGetAll {
+    string label = 1;
+    string icon = 2;
+    string table_id = 3;
+    string layout_id = 4;
+    string parent_id = 5;
+    string type = 6;
+    string id = 7;
+    string project_id = 8;
+    google.protobuf.Struct data = 9;
+    string microfrontend_id = 10;
+    string webpage_id = 11;
+    google.protobuf.Struct attributes = 12;
+    string report_setting_id = 13;
+    string pivot_template_id = 15;
+    string wiki_id = 16;
+    bool is_static = 17;
+}
+
+message GetAllMenusResponse {
+    repeated MenuForGetAll menus = 1;
+    int32 count = 2;
+}
+
+message MenuPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string user_id = 3;
+    string env_id = 4;
+    string label = 5;
+}
+
+message GetAllMenusRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    string role_id = 5;
+    string parent_id = 6;
+    string type = 7;
+    bool for_template = 8;
+    string table_id = 9;
+}
+
+message UpdateMenuOrderRequest {
+    repeated Menu menus = 1;
+    string project_id = 2;
+}
+
+message GetWikiFolderRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    string role_id = 5;
+    string parent_id = 6;
+    string type = 7;
+    bool for_template = 8;
+    bool is_visible = 9;
+    string environment_id = 10;
+}

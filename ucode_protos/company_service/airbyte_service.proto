@@ -1,0 +1,67 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "company.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+
+service AirbyteService {
+    rpc Create(CreateAirbyteRequest) returns (CreateAirbyteResponse) {}
+    rpc GetById(GetAirbyteByIdRequest) returns (Airbyte) {}
+    rpc GetList(GetListAirbyteRequest) returns (GetListAirbyteResponse) {}
+}
+
+message GetListAirbyteResponse {
+    int32 count = 1;
+    repeated Airbyte airbytes = 2;
+}
+
+message GetListAirbyteRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string project_id = 3;
+    string environment_id = 4;
+}
+
+message CreateAirbyteRequest {
+    string project_id = 1;
+    string environment_id = 2;
+    string resource_id = 3;
+    int64 schedule_time = 4;
+    string workspace_id = 5;
+    string source_id = 6;
+    string destination_id = 7;
+    string connection_id = 8;
+    string connection_name = 9;
+}
+
+message CreateAirbyteResponse {
+    string id = 1;
+}
+
+message GetAirbyteByIdRequest {
+    string id = 1;
+}
+
+message Airbyte {
+    string id = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    string resource_id = 4;
+    int64 schedule_time = 5;
+    string workspace_id = 6;
+    string source_id = 7;
+    string destination_id = 8;
+    string connection_id = 9;
+    string connection_name = 10;
+    string host = 11;
+    int64 port = 12;
+    string username = 13;
+    string database = 14;
+    string password = 15;
+    string superset_username = 16;
+    string superset_password = 17;
+}

@@ -1,0 +1,45 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+import "google/protobuf/empty.proto";
+
+
+service ProjectService {
+    rpc Create(CreateProjectRequest) returns (ProjectPrimaryKey) {}
+    rpc GetByPK(ProjectPrimaryKey) returns (Project) {}
+    rpc GetList(GetProjectListRequest) returns (GetProjectListResponse) {}
+    rpc Update(UpdateProjectRequest) returns (google.protobuf.Empty) {}
+    rpc Delete(ProjectPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CreateProjectRequest {
+    string company_id = 1;
+    string name = 2;
+    string domain = 3;
+}
+
+message ProjectPrimaryKey {
+    string id = 1;
+}
+
+message GetProjectListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string company_id = 4;
+    string user_id = 5;
+}
+
+message GetProjectListResponse {
+    repeated Project projects = 1;
+    int32 count = 2;
+}
+
+message UpdateProjectRequest {
+    string id = 1;
+    string name = 2;
+    string domain = 3;
+}

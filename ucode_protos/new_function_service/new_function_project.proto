@@ -1,0 +1,59 @@
+syntax="proto3";
+
+package new_function_service;
+option go_package="genproto/new_function_service";
+
+import "google/protobuf/empty.proto";
+
+service FunctionProjectService {
+    rpc Register(RegisterProjectRequest) returns (google.protobuf.Empty) {}
+    rpc RegisterProjects(RegisterProjectRequest) returns (google.protobuf.Empty) {}
+    rpc Deregister(DeregisterProjectRequest) returns (google.protobuf.Empty) {}
+    rpc Reconnect(RegisterProjectRequest) returns (google.protobuf.Empty) {}
+    rpc RegisterMany(RegisterManyProjectsRequest) returns (RegisterManyProjectsResponse) {}
+    rpc DeregisterMany(DeregisterManyProjectsRequest) returns (DeregisterManyProjectsResponse) {}
+}
+
+message RegisterProjectRequest {
+    message Credentials {
+        string host = 1;
+        string port = 2;
+        string username = 3;
+        string password = 4;
+        string database = 5;
+    }
+    string k8s_namespace = 1;
+    string project_id = 2;
+    string secret_path = 3;
+    Credentials credentials = 4;
+    string user_id = 5;
+    string resource_id = 6;
+}
+
+message DeregisterProjectRequest {
+    string k8s_namespace = 1;
+    string project_id = 2;
+}
+
+message RegisterDeregisterProjectResponse {
+    string k8s_namespace = 1;
+    bool has_error = 2;
+    string error_message = 3;
+}
+
+message RegisterManyProjectsRequest {
+    repeated RegisterProjectRequest projects = 1;
+}
+
+message RegisterManyProjectsResponse {
+    map<string, RegisterDeregisterProjectResponse> projects = 1;
+}
+
+message DeregisterManyProjectsRequest {
+    repeated DeregisterProjectRequest projects = 1;
+}
+
+message DeregisterManyProjectsResponse {
+    map<string, RegisterDeregisterProjectResponse> projects = 1;
+}
+

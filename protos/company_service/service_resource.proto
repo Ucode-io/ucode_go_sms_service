@@ -1,0 +1,61 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "projects_service.proto";
+import "company.proto";
+
+
+service MicroserviceResource {
+  rpc GetList(GetListServiceResourceReq) returns (GetListServiceResourceRes) {}
+  rpc Update(UpdateServiceResourceReq) returns (UpdateServiceResourceRes) {}
+  rpc GetSingle(GetSingleServiceResourceReq) returns (ServiceResourceModel) {}
+}
+
+message ServiceResourceModel {
+  string id = 1;
+  ServiceType service_type = 2;
+  string project_id = 3;
+  string title = 4;
+  string description = 5;
+  string resource_environment_id = 6;
+  string resource_id = 7;
+  string environment_id = 8;
+  ResourceType resource_type = 9;
+  string node_type = 10;
+  string project_status = 11;
+}
+
+message GetListServiceResourceReq {
+  string project_id = 1;
+  string environment_id = 2;
+  string resource_id = 3;
+}
+
+message GetListServiceResourceRes {
+  message ResourceTypeList {
+    int32 id = 1;
+    string name = 2;
+  }
+  map<string, ServiceResourceModel> service_resources = 1;
+  repeated Resource resources = 2;
+  map<int32, string> resource_types = 3;
+}
+
+message GetSingleServiceResourceReq {
+  string id = 1;
+  string project_id = 2;
+  string environment_id = 3;
+  ServiceType service_type = 4;
+}
+
+message UpdateServiceResourceReq {
+  repeated ServiceResourceModel service_resources = 1;
+  string project_id = 2;
+  string environment_id = 3;
+}
+
+message UpdateServiceResourceRes {
+  int32 rows_affected = 1;
+}

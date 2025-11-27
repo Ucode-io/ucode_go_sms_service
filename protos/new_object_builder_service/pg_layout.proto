@@ -1,0 +1,245 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "pg_section.proto";
+
+service LayoutService {
+    rpc CreateAll(CreateLayoutRequest) returns (GetListLayoutResponse) {}
+    rpc Update(LayoutRequest) returns (LayoutResponse) {}
+    rpc GetAll(GetListLayoutRequest) returns (GetListLayoutResponse) {}
+    rpc GetSingleLayout(GetSingleLayoutRequest) returns (LayoutResponse) {}
+    rpc RemoveLayout(LayoutPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc GetByID(LayoutPrimaryKey) returns (LayoutResponse) {}
+    rpc GetLayoutByTableID(GetLayoutByTableIDRequest) returns (GetListLayoutResponse) {}
+}
+
+message GetSingleLayoutRequest {
+    string project_id = 1;
+    string table_id = 2;
+    string menu_id = 3;
+    string table_slug = 4;
+    string role_id = 5;
+    string language_setting = 6;
+}
+
+message GetLayoutByTableIDRequest {
+    string project_id = 1;
+    string table_id = 2;
+}
+
+message LayoutRequest {
+    string id = 1;
+    string label = 2;
+    int32 order = 3;
+    string table_id = 4;
+    string type = 5;
+    repeated TabRequest tabs = 6;
+    string icon = 7;
+    bool is_default = 8;
+    bool is_modal = 9;
+    bool is_visible_section = 10;
+    repeated FieldForSection summary_fields = 11;
+    google.protobuf.Struct attributes = 12;
+    string menu_id = 13;
+    string project_id = 14;
+    string env_id = 15;
+    bool without_response = 16;
+}
+
+message LayoutResponse {
+    string id = 1;
+    string label = 2;
+    int32 order = 3;
+    string table_id = 4;
+    string type = 5;
+    repeated TabResponse tabs = 6;
+    string icon = 7;
+    bool is_default = 8;
+    bool is_modal = 9;
+    bool is_visible_section = 10;
+    repeated FieldResponse summary_fields = 11;
+    google.protobuf.Struct attributes = 12;
+    string menu_id = 13;
+}
+
+message GetListLayoutResponse {
+    repeated LayoutResponse layouts = 1;
+}
+
+message TabRequest {
+    string id = 1;
+    string label = 2;
+    string layout_id = 3;
+    string relation_id = 4;
+    string type = 5;
+    repeated Section sections = 6;
+    int32 order = 7;
+    string icon = 8;
+    google.protobuf.Struct attributes = 9;
+    string view_type = 10;
+}
+
+message TabResponse {
+    string id = 1;
+    string label = 2;
+    string layout_id = 3;
+    string relation_id = 4;
+    string type = 5;
+    repeated SectionResponse sections = 6;
+    int32 order = 7;
+    string icon = 8;
+    RelationForSection relation = 9;
+    google.protobuf.Struct attributes = 10;
+    string view_type = 11;
+}
+
+message IncrementID2 {
+    bool with_increment_id = 1;
+    int32 digit_number = 2;
+    string prefix = 3;
+}
+
+message CommitInfo2 {
+    string id = 1;
+    string commit_type = 2;
+    string created_at = 3;
+    string name = 4;
+    repeated string version_ids = 5;
+}
+
+message Table2 {
+    string id = 1;
+    string label = 2;
+    string description = 3;
+    string slug = 4;
+    bool show_in_menu = 5;
+    string icon = 6;
+    string subtitle_field_slug = 7;
+    bool is_visible = 8;
+    bool is_own_table = 9;
+    IncrementID2 increment_id = 10;
+    string project_id = 11;
+    string folder_id = 12;
+    string author_id = 13;
+    CommitInfo2 commit_info = 14;
+    bool is_cached = 15;
+}
+
+message Field2 {
+    string id = 1;
+    string default = 2;
+    string type = 3;
+    string index = 4;
+    string label = 5;
+    string slug = 6;
+    string table_id = 7;
+    bool required = 8;
+    google.protobuf.Struct attributes = 9;
+    bool is_visible = 10;
+    string autofill_field = 11;
+    string autofill_table = 12;
+    string relation_id = 13;
+    bool unique = 14;
+    bool automatic = 15;
+    string project_id = 16;
+    string commit_id = 17;
+    string version_id = 18;
+}
+
+message Summary2 {
+    string field_name = 1;
+    string formula_name = 2;
+}
+
+message QuickFilter2 {
+    string field_id = 1;
+    string default_value = 2;
+}
+
+message DynamicTable2 {
+    string table_slug = 1;
+    repeated string view_fields = 2;
+}
+
+message AutoFilter2 {
+    string field_to = 1;
+    string field_from = 2;
+}
+
+message Cascading2 {
+    string field_slug = 1;
+    string table_slug = 2;
+    string label = 3;
+    int32 order = 4;
+}
+
+message ActionRelation2 {
+    string key = 1;
+    string value = 2;
+}
+
+
+message RelationForGetAll2 {
+    string id = 1;
+    Table2 table_from = 2;
+    Table2 table_to = 3;
+    string type = 4;
+    repeated Field2 view_fields = 5;
+    repeated Summary2 summaries = 6;
+    bool editable = 7;
+    bool is_editable = 8;
+    string title = 9;
+    repeated string columns = 10;
+    repeated QuickFilter2 quick_filters = 11;
+    repeated string group_fields = 12;
+    string relation_table_slug = 13;
+    string view_type = 14;
+    repeated DynamicTable2 dynamic_tables = 15;
+    string relation_field_slug = 16;
+    repeated AutoFilter2 auto_filters = 17;
+    repeated string default_values = 18;
+    string field_from = 19;
+    string field_to = 20;
+    bool is_user_id_default = 21;
+    repeated Cascading2 cascadings = 22;
+    bool object_id_from_jwt = 23;
+    string cascading_tree_table_slug = 24;
+    string cascading_tree_field_slug = 25;
+    repeated ActionRelation2 action_relations = 26;
+    string default_limit = 27;
+    bool multiple_insert = 28;
+    repeated string updated_fields = 29;
+    string multiple_insert_field = 30;
+}
+
+message CreateLayoutRequest {
+    string project_id = 1;
+    string env_id = 2;
+}
+
+message UpdateLayoutRequest {
+    repeated LayoutRequest layout = 1;
+    string table_id = 2;
+    string project_id = 3;
+}
+
+message LayoutPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+    string role_id = 4;
+}
+
+message GetListLayoutRequest {
+    string table_slug = 1;
+    string project_id = 2;
+    bool is_default = 3;
+    string table_id = 4;
+    string role_id = 5;
+    string language_setting = 6;
+    string menu_id = 7;
+}

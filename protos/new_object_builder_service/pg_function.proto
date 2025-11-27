@@ -1,0 +1,122 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+service FunctionServiceV2 {
+    rpc Create(CreateFunctionRequest) returns (Function) {}
+    rpc GetList(GetAllFunctionsRequest) returns (GetAllFunctionsResponse) {}
+    rpc GetSingle(FunctionPrimaryKey) returns (Function) {}
+    rpc Update(Function) returns (google.protobuf.Empty) {}
+    rpc Delete(FunctionPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc GetListByRequestTime(GetListByRequestTimeRequest) returns (GetAllFunctionsResponse) {}
+    rpc UpdateManyByRequestTime(UpdateManyUrlAndPassword) returns (google.protobuf.Empty) {}
+    rpc GetCountByType(GetCountByTypeRequest) returns (GetCountByTypeResponse) {}
+}
+
+message CreateFunctionRequest {
+    string path = 1;
+    string name = 2;
+    string description = 3;
+    string project_id = 4;
+    string version_id = 5;
+    string commit_id = 6;
+    string commit_guid = 7;
+    string environment_id = 8;
+    string function_folder_id = 9;
+    string url = 10;
+    string password = 11;
+    string ssh_url = 12;
+    string type = 13;
+    string framework_type = 16;
+    string gitlab_id = 14;
+    string gitlab_group_id = 15;
+    string source_url = 17;
+    string pipeline_status = 18;
+    string branch = 19;
+    string repo_id = 20;
+    string error_message = 21;
+    string job_name = 22;
+    string resource = 23;
+    string provided_name = 24;
+    bool is_public = 25;
+    int32 max_scale = 26;
+    int32 former_max_scale = 27;
+}
+
+message Function {
+    string id = 1;
+    string path = 2;
+    string name = 3;
+    string description = 4;
+    string project_id = 5;
+    string function_folder_id = 7;
+    string environment_id = 8;
+    string url = 9;
+    string password = 10;
+    string ssh_url = 11;
+    string type = 12;
+    string gitlab_id = 13;
+    string gitlab_group_id = 14;
+    string framework_type = 15;
+    string source_url = 16;
+    string pipeline_status = 17;
+    string branch = 18;
+    string repo_id = 19;
+    string error_message = 20;
+    string job_name = 21;
+    string resource = 22;
+    string provided_name = 23;
+    string request_type = 24;
+    bool is_public = 25;
+    int32 max_scale = 26;
+    int32 former_max_scale = 27;
+}
+
+message GetAllFunctionsRequest {
+    string search = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string project_id = 4;
+    string environment_id = 5;
+    repeated string type = 6;
+    string function_id = 7;
+}
+
+message GetAllFunctionsResponse {
+    repeated Function functions = 1;
+    int32 count = 2;
+}
+
+message FunctionPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string path = 3;
+    string source_url = 4;
+    string branch = 5;
+}
+
+message UpdateManyUrlAndPassword {
+    repeated string ids = 1;
+    string project_id = 2;
+}
+
+message GetListByRequestTimeRequest {
+    string search = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string project_id = 4;
+    string environment_id = 5;
+    string type = 6;
+}
+
+message GetCountByTypeRequest {
+    string project_id = 1;
+    repeated string type = 2;
+}
+
+message GetCountByTypeResponse{
+    int32 count = 1;
+}

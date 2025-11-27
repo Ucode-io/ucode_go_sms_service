@@ -1,0 +1,208 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "field.proto";
+import "table.proto";
+import "view.proto";
+import "object_builder.proto";
+import "google/protobuf/struct.proto";
+
+service RelationService {
+    rpc Create(CreateRelationRequest) returns (CreateRelationRequest) {}
+    rpc GetAll(GetAllRelationsRequest) returns (GetAllRelationsResponse) {}
+    rpc GetByID(RelationPrimaryKey) returns (RelationForGetAll) {}
+    rpc Update(UpdateRelationRequest) returns (RelationForGetAll) {}
+    rpc Delete(RelationPrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc GetIds(GetIdsReq) returns (GetIdsResp) {}
+}
+
+message CreateRelationRequest {
+    string table_from = 1; 
+    string table_to = 2;
+    string type = 3;
+    repeated string view_fields = 4;
+    repeated Summary summaries = 5;
+    bool editable = 6;
+    bool is_editable = 7;
+    string title = 8;
+    string view_type = 9;
+    repeated string columns = 10;
+    repeated QuickFilter quick_filters = 11;
+    repeated string group_fields = 12;
+    string relation_table_slug = 13;
+    repeated DynamicTable dynamic_tables = 14;
+    string relation_field_slug = 15;
+    repeated AutoFilter auto_filters = 16;
+    repeated string default_values = 17;
+    bool is_user_id_default = 18;
+    repeated Cascading cascadings = 19;
+    bool object_id_from_jwt = 20;
+    string cascading_tree_table_slug = 21;
+    string cascading_tree_field_slug = 22;
+    repeated ActionRelation action_relations = 23;
+    string default_limit = 24;
+    bool multiple_insert = 25;
+    repeated string updated_fields = 26;
+    string multiple_insert_field = 27;
+    string project_id = 28;
+    string commit_id = 29;
+    string version_id = 30;
+    bool creatable = 31;
+    bool default_editable = 32;
+    string function_path = 33;
+    bool relation_buttons = 34;
+    google.protobuf.Struct attributes = 35;
+    string id = 36;
+    string env_id = 37;
+    string relation_field_id = 38;
+    string relation_to_field_id = 39;
+}
+
+message AutoFilter {
+    string field_to = 1;
+    string field_from = 2;
+}
+
+message DynamicTable {
+    string table_slug = 1;
+    repeated string view_fields = 2;
+}
+
+message UpdateRelationRequest {
+    string id = 1;
+    string table_from = 2; 
+    string table_to = 3;
+    string type = 4;
+    repeated string view_fields = 5;
+    repeated Summary summaries = 6;
+    bool editable = 7;
+    bool is_editable = 8;
+    string title = 9;
+    repeated string columns = 10;
+    repeated QuickFilter quick_filters = 11;
+    repeated string group_fields = 12;
+    string relation_table_slug = 13;
+    string view_type = 14;
+    repeated DynamicTable dynamic_tables = 15;
+    string relation_field_slug = 16;
+    repeated AutoFilter auto_filters = 17;
+    repeated string default_values = 18;
+    bool is_user_id_default = 19;
+    repeated Cascading cascadings = 20;
+    bool object_id_from_jwt = 21;
+    string cascading_tree_table_slug = 22;
+    string cascading_tree_field_slug = 23;
+    repeated ActionRelation action_relations = 24;
+    string default_limit = 25;
+    bool multiple_insert = 26;
+    repeated string updated_fields = 27;
+    string multiple_insert_field = 28;
+    string project_id = 29;
+    string commit_id = 30;
+    string version_id = 31;
+    bool creatable = 32;
+    bool default_editable = 33;
+    string function_path = 34;
+    bool relation_buttons = 35;
+    google.protobuf.Struct attributes = 36;
+    string env_id = 37;
+    bool required = 38;
+}
+
+
+message RelationForGetAll {
+    string id = 1;
+    Table table_from = 2; 
+    Table table_to = 3;
+    string type = 4;
+    repeated Field view_fields = 5;
+    repeated Summary summaries = 6;
+    bool editable = 7;
+    bool is_editable = 8;
+    string title = 9;
+    repeated string columns = 10;
+    repeated QuickFilter quick_filters = 11;
+    repeated string group_fields = 12;
+    string relation_table_slug = 13;
+    string view_type = 14;
+    repeated DynamicTable dynamic_tables = 15;
+    string relation_field_slug = 16;
+    repeated AutoFilter auto_filters = 17;
+    repeated string default_values = 18;
+    string field_from = 19;
+    string field_to = 20;
+    bool is_user_id_default = 21;
+    repeated Cascading cascadings = 22;
+    bool object_id_from_jwt = 23;
+    string cascading_tree_table_slug = 24;
+    string cascading_tree_field_slug = 25;
+    repeated ActionRelation action_relations = 26;
+    string default_limit = 27;
+    bool multiple_insert = 28;
+    repeated string updated_fields = 29;
+    string multiple_insert_field = 30;
+    bool is_system = 31;
+    bool default_editable = 32;
+    string function_path = 33;
+    bool relation_buttons = 34;
+    bool creatable = 35;
+    google.protobuf.Struct attributes = 36;
+}
+
+message GetAllRelationsResponse {
+    repeated RelationForGetAll relations = 1;
+    int32 count = 2;
+}
+
+message GetAllRelationsRequest {
+    string table_slug = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string table_id = 4;
+    string relation_table_slug = 5;
+    string project_id = 6;
+    string version_id = 7;
+    bool disable_table_from = 8;
+    bool disable_table_to = 9;
+}
+
+message RelationPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+}
+
+message Summary {
+    string field_name = 1;
+    string formula_name = 2;
+}
+
+message Cascading {
+    string field_slug = 1;
+    string table_slug = 2;
+    string label = 3;
+    int32 order = 4;
+}
+message CascadingTree {
+    string table_slug = 1;
+    string field_slug = 2;
+}
+message ActionRelation {
+    string key = 1;
+    string value = 2;
+}
+
+message GetIdsReq {
+    string table_from = 1;
+    string table_to = 2;
+    string type = 3;
+    string project_id = 4;
+}
+
+message GetIdsResp {
+    repeated string ids = 1;
+}

@@ -1,0 +1,52 @@
+syntax="proto3";
+
+package new_function_service;
+option go_package="genproto/new_function_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+
+service FunctionFolderService {
+    rpc Create(CreateFunctionFolderRequest) returns (FunctionFolder) {}
+    rpc GetList(GetAllFunctionFoldersRequest) returns (GetAllFunctionFoldersResponse) {}
+    rpc GetSingle(FunctionFolderPrimaryKey) returns (FunctionFolder) {}
+    rpc Update(FunctionFolder) returns (google.protobuf.Empty) {}
+    rpc Delete(FunctionFolderPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CreateFunctionFolderRequest {
+    string title = 1;
+    string description = 2;
+    string environment_id = 3;
+    string project_id = 4;
+    string type = 5;
+}
+
+message FunctionFolder {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string environment_id = 4;
+    string project_id = 5;
+    string type = 6;
+}
+
+message GetAllFunctionFoldersRequest {
+    string search = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string environment_id = 4;
+    string project_id = 5;
+    string type = 6;
+}
+
+message GetAllFunctionFoldersResponse {
+    repeated FunctionFolder function_folders = 1;
+    int32 count = 2;
+}
+
+message FunctionFolderPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}

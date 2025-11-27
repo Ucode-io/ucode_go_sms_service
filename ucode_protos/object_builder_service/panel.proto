@@ -1,0 +1,66 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service PanelService {
+    rpc Create(CreatePanelRequest) returns (Panel) {}
+    rpc GetList(GetAllPanelsRequest) returns (GetAllPanelsResponse) {}
+    rpc GetSingle(PanelPrimaryKey) returns (Panel) {}
+    rpc Update(Panel) returns (google.protobuf.Empty) {}
+    rpc UpdateCoordinates(UpdatePanelCoordinatesRequest) returns (google.protobuf.Empty) {}
+    rpc Delete(PanelPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+
+message CreatePanelRequest {
+    string query = 1;
+    repeated int32 coordinates = 2;
+    google.protobuf.Struct attributes = 3;
+    string title = 4;
+    string dashboard_id = 5;
+    bool has_pagination = 6;
+    string project_id = 7;
+    int64 commit_id = 8;
+    string commit_guid = 9;
+}
+
+
+message Panel {
+    string id = 1;
+    string query = 2;
+    repeated int32 coordinates = 3;
+    google.protobuf.Struct attributes = 4;
+    string title = 5;
+    string dashboard_id = 6;
+    bool has_pagination = 7;
+    string project_id = 8;
+}
+
+message GetAllPanelsResponse {
+    repeated Panel panels = 1;
+    int32 count = 2;
+}
+
+message GetAllPanelsRequest {
+    string title = 1;
+    string project_id = 2;
+}
+
+message PanelPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message PanelCoordinates {
+    string id = 1;
+    repeated int32 coordinates = 2;
+}
+
+message UpdatePanelCoordinatesRequest {
+    repeated PanelCoordinates panel_coordinates = 1;
+    string project_id = 2;
+}

@@ -1,0 +1,45 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+service QueryFolderService {
+    rpc Create(CreateQueryFolderRequest) returns (QueryFolder) {};
+    rpc GetAll(GetAllQueryFolderRequest) returns (GetAllQueryFolderResponse) {};
+    rpc GetById(QueryFolderId) returns (QueryFolder) {};
+    rpc Update(QueryFolder) returns (google.protobuf.Empty) {};
+    rpc Delete(QueryFolderId) returns (google.protobuf.Empty) {};
+}
+
+message CreateQueryFolderRequest {
+    string title = 1;
+    string parent_id = 2;
+    string project_id = 3;
+}
+
+message QueryFolder {
+    string id = 1;
+    string title = 2;
+    string parent_id = 3;
+    string project_id = 4;
+}
+
+message QueryFolderId {
+    string id = 1;
+    string project_id = 2;
+}
+
+message GetAllQueryFolderRequest {
+    string parent_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string search = 4;
+    string project_id = 5;
+}
+
+message GetAllQueryFolderResponse {
+    repeated QueryFolder folders = 1;
+    int32 count = 2;
+}

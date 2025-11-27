@@ -1,0 +1,520 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+ 
+import "auth.proto";
+import "user_service.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service SessionService {
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {}
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+    rpc HasAccess(HasAccessRequest) returns (HasAccessResponse) {}
+    rpc HasAccessSuperAdmin(HasAccessSuperAdminReq) returns (HasAccessSuperAdminRes) {}
+    rpc V2Login(V2LoginRequest) returns (V2LoginResponse) {}
+    rpc V2LoginSuperAdmin(V2LoginSuperAdminReq) returns (V2LoginSuperAdminRes) {}
+    rpc V2HasAccess(HasAccessRequest) returns (HasAccessResponse) {}
+    rpc V2HasAccessUser(V2HasAccessUserReq) returns (V2HasAccessUserRes) {}
+    rpc HasAccessUser(V2HasAccessUserReq) returns (V2HasAccessUserRes) {}
+    rpc V2RefreshToken(RefreshTokenRequest) returns (V2LoginResponse) {}
+    rpc V2RefreshTokenSuperAdmin(RefreshTokenRequest) returns (V2RefreshTokenSuperAdminResponse) {}
+    rpc SessionAndTokenGenerator (SessionAndTokenRequest) returns (V2LoginResponse) {}
+    rpc UpdateSessionsByRoleId (UpdateSessionByRoleIdRequest) returns (google.protobuf.Empty) {}
+    rpc MultiCompanyLogin(MultiCompanyLoginRequest) returns (MultiCompanyLoginResponse) {}
+    rpc V2MultiCompanyLogin(V2MultiCompanyLoginReq) returns (V2MultiCompanyLoginRes) {}
+    rpc V2MultiCompanyOneLogin(V2MultiCompanyLoginReq) returns (V2MultiCompanyOneLoginRes) {}
+    rpc V2LoginWithOption(V2LoginWithOptionRequest) returns (V2LoginWithOptionsResponse) {}
+    rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
+    rpc V2ResetPassword(V2ResetPasswordRequest) returns (User) {}
+    rpc V2RefreshTokenForEnv(RefreshTokenRequest) returns (V2LoginResponse) {}
+    rpc ExpireSessions (ExpireSessionsRequest) returns (google.protobuf.Empty) {}
+    rpc GetList (GetSessionListRequest) returns (GetSessionListResponse) {}
+    rpc Delete (SessionPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc DeleteByParams(DeleteByParamsRequest) returns (google.protobuf.Empty) {}
+}
+
+message V2ResetPasswordRequest {
+    string password = 1;
+    string user_id = 2;
+    string email = 3;
+}
+
+message ForgotPasswordRequest {
+    string login = 1;
+}
+
+message ForgotPasswordResponse {
+    bool login_found = 1;
+    string sms_id = 2;
+    string user_id = 3;
+    string email = 4;
+}
+
+message ResourceEnvironmentV2MultiCompany {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+    bool is_configured = 5;
+    int32 resource_type = 6;
+    int32 service_type = 7;
+    string name = 8;
+    string display_color = 9;
+    string description = 10;
+    google.protobuf.Struct client_types = 11;
+    string node_type = 12;
+    string access_type = 13;
+}
+
+message Project2 {
+    string id = 1;
+    string company_id = 2;
+    string name = 3;
+    string domain = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    repeated ResourceEnvironmentV2MultiCompany resource_environments = 7;
+    google.protobuf.Struct client_types = 8;
+    message Currency {
+        string id = 1;
+        string symbol = 2;
+        string name = 3;
+        string symbol_native = 4;
+        int32 decimal_digits = 5;
+        int32 rounding = 6;
+        string code = 7;
+        string name_plural = 8;
+    }
+    repeated Currency currencies = 9;
+    bool new_design = 10;
+    string status = 11;
+    string expire_date = 12;
+    bool new_layout = 13;
+    string subscription_type = 14;
+    bool new_router = 15;
+}
+
+message Company2 {
+    string id = 1;
+    string name = 2;
+    string logo = 3;
+    string description = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string owner_id = 7;
+    repeated Project2 projects = 8;
+}
+
+message V2MultiCompanyOneLoginRes {
+    
+    repeated Company2 companies = 1;
+    string user_id = 2;
+}
+
+message V2HasAccessUserReq {
+    string access_token = 1;
+    string project_id = 2;
+    string path = 3;
+    string method = 4;
+    string environment_id = 5;
+    string table_slug = 6;
+}
+
+message V2HasAccessUserRes {
+    string id = 1;
+    string project_id = 2;
+    string user_id = 3;
+    string ip = 4;
+    string data = 5;
+    string expires_at = 6;
+    string created_at = 7;
+    string updated_at = 8;
+    repeated TableBody tables = 9;
+    string client_platform_id = 10;
+    string client_type_id = 11;
+    string role_id = 12;
+    string login_table_slug = 13;
+    string env_id = 14;
+    string user_id_auth = 15;
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+    repeated Object tables = 3;
+}
+
+message LoginResponse {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    User user = 4;
+    Role role = 5;
+    Token token = 6;
+    repeated Permission permissions = 7;
+    repeated Session sessions = 8;   
+    repeated Company companies = 9;
+}
+
+message LogoutRequest {
+    string access_token = 1;
+}
+
+message RefreshTokenRequest {
+    string refresh_token = 1;
+    string role_id = 2;
+    string client_type_id = 3;
+    string env_id = 4;
+    string project_id = 5;
+    repeated TableBody tables = 6;
+}
+
+message RefreshTokenResponse {
+    Token token = 6;
+}
+
+message V2RefreshTokenResponse {
+    Token token = 1;
+    repeated RecordPermission permissions = 2;
+}
+
+message V2RefreshTokenSuperAdminResponse {
+    Token token = 1;
+}
+
+message HasAccessRequest {
+    string access_token = 1;
+    string project_id = 2;
+    string client_platform_id = 3;
+    string path = 4;
+    string method = 5;
+    string node_type = 6;
+}
+
+message HasAccessResponse {
+    string id = 1;
+    string project_id = 2;
+    string client_platform_id = 3;
+    string client_type_id = 4;
+    string user_id = 5;
+    string role_id = 6;
+    string ip = 7;
+    string data = 8;
+    string expires_at = 9;
+    string created_at = 10;
+    string updated_at = 11;
+    repeated TableBody tables = 12;
+    string login_table_slug = 13;
+    string env_id = 14;
+}
+
+message HasAccessSuperAdminReq {
+    string access_token = 1;
+    string project_id = 2;
+    string path = 3;
+    string method = 4;
+    string table_slug = 5;
+}
+
+message HasAccessSuperAdminRes {
+    string id = 1;
+    string project_id = 2;
+    string user_id = 5;
+    string ip = 7;
+    string data = 8;
+    string expires_at = 9;
+    string created_at = 10;
+    string updated_at = 11;
+    repeated TableBody tables = 12;
+    string env_id = 13;
+    string client_type_id = 14;
+    string role_id = 15;
+    string user_id_auth = 16;
+}
+
+message TableBody {
+    string table_slug = 1;
+    string object_id = 2;
+}
+
+message CreateSessionRequest {
+    string project_id = 2;
+    string client_platform_id = 3;
+    string client_type_id = 4;
+    string user_id = 5;
+    string role_id = 6;
+    string ip = 7;
+    string data = 8;
+    string expires_at = 9;
+    string integration_id = 10;
+    string env_id = 11;
+    string user_id_auth = 12;
+    string client_id = 13;
+    int32 session_limit = 14;
+}
+
+message UpdateSessionRequest {
+    string id = 1;
+    string project_id = 2;
+    string client_platform_id = 3;
+    string client_type_id = 4;
+    string user_id = 5;
+    string role_id = 6;
+    string ip = 7;
+    string data = 8;
+    string expires_at = 9;
+    bool is_changed = 10;
+    string env_id = 11;
+}
+
+message SessionPrimaryKey {
+    string id = 1;
+}
+
+message GetSessionListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string user_id = 4;
+    string client_type_id = 5;
+}
+
+message GetSessionListResponse {
+    int32 count = 1;
+    repeated Session sessions = 2;
+}
+
+message Object {
+    string table_slug = 1;
+    string object_id = 2;
+}
+
+message RecordPermission {
+    string id = 1;
+    string client_type_id = 2;
+    string role_id = 3;
+    string table_slug = 4;
+    string read = 5;
+    string write = 6;
+    string update = 7;
+    string delete = 8;
+    string automation = 9;
+    string language_btn = 10;
+    string settings = 11;
+    string share_modal = 12;
+    string view_create = 13;
+    string pdf_action = 14;
+    string add_field = 15;
+    string add_filter = 16;
+    string field_filter = 17;
+    string fix_column = 18;
+    string tab_group = 19;
+    string columns = 20;
+    string group = 21;
+    string excel_menu = 22;
+    string search_button = 23;
+}
+
+message GlobalPermission {
+    string id = 1;
+    bool menu_button = 2;
+    bool chat = 3;
+    bool settings_button = 4;
+    bool project_settings_button = 5;
+    bool profile_settings_button = 6;
+    bool menu_setting_button = 7;
+    bool redirects_button = 8;
+    bool api_keys_button = 9;
+    bool environments_button = 10;
+    bool projects_button = 11;
+    bool environment_button = 12;
+    bool version_button = 13;
+    bool project_button = 14;
+    bool sms_button = 15;
+    bool gitbook_button = 16;
+    bool chatwoot_button = 17;
+    bool gpt_button = 18;
+    bool billing = 19;
+}
+
+message V2LoginResponse {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    string user_id = 4;
+    Role role = 5;
+    Token token = 6;
+    repeated RecordPermission permissions = 7;
+    repeated Session sessions = 8;
+    string login_table_slug = 9;
+    repeated RecordPermission app_permissions = 10;
+    string resource_id = 11;
+    string environment_id = 12;
+    User user = 13;
+    repeated Object tables = 14;
+    google.protobuf.Struct addational_table = 15;
+    GlobalPermission global_permission  = 16;
+    google.protobuf.Struct user_data = 17;
+    string user_id_auth = 18;
+}
+message V2LoginWithOptionsResponse {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    string user_id = 4;
+    Role role = 5;
+    Token token = 6;
+    repeated RecordPermission permissions = 7;
+    repeated Session sessions = 8;
+    string login_table_slug = 9;
+    repeated RecordPermission app_permissions = 10;
+    string resource_id = 11;
+    string environment_id = 12;
+    User user = 13;
+    repeated Object tables = 14;
+    google.protobuf.Struct addational_table = 15;
+    repeated Company companies = 16;
+    google.protobuf.Struct user_data = 17;
+}
+message V2LoginRequest {
+    string username = 1;
+    string password = 2;
+    repeated Object tables = 3;
+    string client_type = 4;
+    string login_strategy = 5;
+    string project_id = 6;
+    string resource_environment_id = 7;
+    int32 resource_type = 8;
+    string environment_id = 9;
+    string phone = 10;
+    string email = 11;
+    string otp = 12;
+    string sms_id = 13;
+    string type = 14;
+    string node_type = 15;
+    string google_token = 16;
+    string client_id = 17;
+    string user_agent = 18;
+    string client_ip = 19;
+    string service_type = 20;
+    string session_info = 21;
+}
+
+message V2LoginWithOptionRequest {
+    map<string, string> data = 1;
+    string login_strategy = 2;
+    repeated Object tables = 3;
+    string client_id = 4;
+    string user_agent = 5;
+    string client_ip = 6;
+}
+
+message V2LoginSuperAdminRes {
+    bool user_found = 1;
+    string user_id = 2;
+    Token token = 3;
+    repeated Session sessions = 4;
+    repeated Company companies = 5;
+    google.protobuf.Struct user_data = 6;
+}
+
+message V2LoginSuperAdminReq {
+    string username = 1;
+    string password = 2;
+}
+
+message SessionAndTokenRequest  {
+    V2LoginResponse login_data = 1;
+    repeated Object tables = 2;
+    string project_id = 3;
+    string environment_id = 4;
+    string client_id = 5;
+    string user_agent = 6;
+    string client_ip = 7;
+}
+
+message UpdateSessionByRoleIdRequest {
+    string role_id = 1;
+    bool is_changed = 2;
+}
+
+message UpdateSessionBySessionIdRequest {
+    string id = 1;
+    bool is_changed = 2;
+}
+
+message V2SuperAdminLoginResponse {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    string user_id = 4;
+    Role role = 5;
+    Token token = 6;
+    repeated RecordPermission permissions = 7;
+    repeated Session sessions = 8;
+    string login_table_slug = 9;
+    repeated RecordPermission app_permissions = 10; 
+    repeated Company companies = 11;
+}
+
+message MultiCompanyLoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message V2MultiCompanyLoginReq {
+    string username = 1;
+    string password = 2;
+    string type = 3;
+    string sms_id = 4;
+    string otp = 5;
+    string phone = 6;
+    string email = 7;
+    string google_token = 8;
+    string env_id = 9;
+    string session_info = 10;
+    string service_type = 11;
+}
+
+message V2MultiCompanyLoginRes {
+    repeated Company2 companies = 1;
+    string user_id = 2;
+}
+
+message MultiCompanyLoginResponse {
+    message Company {
+        message Project {
+            string id = 1;
+            string company_id = 2;
+            string name = 3;
+            string domain = 4;
+            string created_at = 5;
+            string updated_at = 6;
+        }
+        string id = 1;
+        string name = 2;
+        string logo = 3;
+        string description = 4;
+        string created_at = 5;
+        string updated_at = 6;
+        string owner_id = 7;
+        repeated Project projects = 8;
+    }
+
+    repeated Company companies = 1;
+    repeated ClientType client_types = 2;
+}
+
+message ExpireSessionsRequest {
+    repeated string session_ids = 1;
+}
+
+message DeleteByParamsRequest {
+    string project_id = 1;
+    string user_id = 2;
+    string client_type_id = 3;
+    string session_id = 4;
+}

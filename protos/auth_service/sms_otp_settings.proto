@@ -1,0 +1,47 @@
+syntax="proto3";
+// 
+package auth_service;
+option go_package="genproto/auth_service";
+import "google/protobuf/empty.proto";
+
+service SmsOtpSettingsService {
+    rpc Create(CreateSmsOtpSettingsRequest) returns (SmsOtpSettings) {}
+    rpc Update(SmsOtpSettings) returns (SmsOtpSettings) {}
+    rpc GetById(SmsOtpSettingsPrimaryKey) returns (SmsOtpSettings) {}
+    rpc GetList(GetListSmsOtpSettingsRequest) returns (SmsOtpSettingsResponse) {}
+    rpc Delete(SmsOtpSettingsPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message GetListSmsOtpSettingsRequest {
+    string project_id = 1;
+    string environment_id = 2;
+}
+
+message SmsOtpSettingsPrimaryKey {
+    string id = 1;
+}
+
+message SmsOtpSettingsResponse {
+   repeated SmsOtpSettings items = 1;
+}
+
+message SmsOtpSettings {
+    string id = 1;
+    string login = 2;
+    string password = 3;
+    string default_otp = 4;
+    int32 number_of_otp = 5;
+    string project_id = 6;
+    string environment_id = 7;
+    string originator = 8;
+}
+
+message CreateSmsOtpSettingsRequest {
+    string default_otp = 1;
+    string login = 2;
+    string password = 3;
+    int32 number_of_otp = 4;
+    string project_id = 5;
+    string environment_id = 6;
+    string originator = 7;
+}

@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+
+service TableHelpersService {
+    rpc ExportToJSON(ExportToJSONRequest) returns (ExportToJSONReponse) {}
+    rpc ImportFromJSON(ImportFromJSONRequest) returns (google.protobuf.Empty) {}
+}
+
+message ImportFromJSONRequest {
+    string file_name = 1;
+    string app_id = 2;
+    string project_id = 3;
+}
+
+message ExportToJSONRequest {
+    string app_id = 1;
+    string project_id = 2;
+    string version_id = 3;
+}
+
+message ExportToJSONReponse {
+    string link = 1;
+}

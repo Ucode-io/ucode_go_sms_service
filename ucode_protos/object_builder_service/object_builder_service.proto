@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package object_builder_service;
+
+option go_package="genproto/object_builder_service";
+
+import "table.proto";
+import "object_builder.proto";
+import "section.proto";
+import "relation.proto";
+import "view.proto";
+import "app.proto";
+import "dashboard.proto";
+import "variable.proto";
+import "panel.proto";
+import "html_template.proto";
+import "login.proto";
+import "document.proto";
+import "event.proto";
+import "event_logs.proto";
+import "excel.proto";
+import "permission.proto";
+import "custom_event.proto";
+import "barcode.proto";
+import "function.proto";
+import "query_folder.proto";
+import "queryies.proto";
+import "web_pages.proto";
+import "cascading.proto";
+import "builder_project.proto";
+import "object_builder_ping_service.proto";
+import "table_helpers.proto";
+import "fields_and_relations.proto";
+import "setting.proto";
+import "table_folder.proto";
+import "layout.proto";
+import "menu.proto";
+import "custom_error_message.proto";
+import "report_setting_service.proto";
+import "items.proto";
+import "file.proto";
+import "request_analytic.proto";
+import "version_history.proto";
+import "version.proto";
+import "language.proto";

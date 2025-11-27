@@ -1,0 +1,57 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/struct.proto";
+
+service ObjectBuilderService {
+    rpc GetList(CommonMessage) returns (CommonMessage) {}
+    rpc GetList2(CommonMessage) returns (CommonMessage) {}
+    rpc GetTableDetails(CommonMessage) returns (CommonMessage) {}
+    rpc GetAll(CommonMessage) returns (CommonMessage) {}
+    rpc GetListSlim(CommonMessage) returns (CommonMessage) {}
+    rpc GetListInExcel(CommonMessage) returns (CommonMessage) {}
+    rpc GetListRelationTabInExcel(CommonMessage) returns (CommonMessage) {}
+    rpc GetGroupByField(CommonMessage) returns (CommonMessage) {}
+    rpc UpdateWithParams(CommonMessage) returns (CommonMessage) {}
+    rpc GetSingleSlim(CommonMessage) returns (CommonMessage) {}
+
+    rpc TestApi(CommonMessage) returns (CommonMessage) {}
+    rpc GetListForDocx(CommonForDocxMessage) returns (CommonMessage) {}
+    rpc GetAllForDocx(CommonMessage) returns (CommonMessage) {}
+    rpc GetAllFieldsForDocx(CommonMessage) returns (CommonMessage) {}
+    rpc GetListAggregation(CommonMessage) returns (CommonMessage) {}
+    rpc AgGridTree(CommonMessage) returns (CommonMessage) {}
+    rpc GetBoardStructure(CommonMessage) returns (CommonMessage) {}
+    rpc GetBoardData(CommonMessage) returns (CommonMessage) {}
+}
+
+message CommonMessage {
+    string table_slug = 1;
+    google.protobuf.Struct data = 2;
+    string project_id = 3;
+    string version_id = 4;
+    string custom_message = 5;
+    bool is_cached = 6;
+    bool blocked_login_table = 7;
+    bool blocked_builder = 8;
+    string env_id = 9;
+    string company_project_id = 10;
+}
+
+message CommonForDocxMessage {
+    repeated string table_slugs = 1;
+    google.protobuf.Struct data = 2;
+    string project_id = 3;
+    string table_slug = 4;
+}
+
+message ManyToManyMessage {
+    string table_from = 1;
+    string table_to = 2;
+    string id_from = 3;
+    repeated string id_to = 4;
+    string project_id = 5;
+    string version_id = 6;
+}

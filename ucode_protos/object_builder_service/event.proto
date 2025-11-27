@@ -1,0 +1,71 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+service EventService {
+    rpc Create(CreateEventRequest) returns (Event) {}
+    rpc GetList(GetEventsListRequest) returns (GetEventsListResponse) {}
+    rpc GetSingle(EventPrimaryKey) returns (Event) {}
+    rpc Update(Event) returns (google.protobuf.Empty) {}
+    rpc Delete(EventPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+
+message CreateEventRequest {
+    string table_slug = 1;
+    When when = 2;
+    repeated Do does = 3;
+    string project_id = 4;
+}
+
+message When {
+    string app_slug = 1;
+    string action = 2;
+    repeated Condition conditions = 3;
+    string project_id = 4;
+}
+
+message Condition {
+    repeated MatchField match_fields = 1;
+}
+
+message MatchField {
+    string left_field = 1;
+    string comparison_symbol = 2;
+    string right_field_type = 3;
+    string right_field = 4;
+}
+
+
+message Do {
+    string opperation_type = 1;
+    string table_slug = 2;
+    repeated MatchField fields = 3;
+}
+
+message Event {
+    string id = 1;
+    string table_slug = 2;
+    When when = 3;
+    repeated Do does = 4;
+    string project_id = 5;
+}
+
+message GetEventsListResponse {
+    repeated Event events = 1;
+    int32 count = 2;
+}
+
+message GetEventsListRequest {
+    string table_slug = 1;
+    string project_id = 2;
+}   
+
+message EventPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}

@@ -1,0 +1,35 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+import "google/protobuf/empty.proto";
+
+
+service ApiKeyUsageService {
+  rpc Get (GetApiKeyUsageReq) returns (ApiKeyUsage) {}
+  rpc CheckLimit (CheckLimitRequest) returns (CheckLimitResponse) {}
+  rpc Create (ApiKeyUsage) returns (google.protobuf.Empty) {}
+  rpc Upsert(ApiKeyUsage) returns (google.protobuf.Empty) {}
+}
+
+message ApiKeyUsage {
+  string api_key = 1;
+  string created_at = 2;
+  int32 request_count = 3;
+  string creation_time = 4;
+  string creation_month = 5;
+}
+
+message GetApiKeyUsageReq {
+  string api_key = 1;
+}
+
+message CheckLimitRequest {
+  string api_key = 1;
+}
+
+message CheckLimitResponse {
+  bool is_limit_reached = 1;
+  int32 rps_count = 2;
+  int32 monthly_count = 3;
+}

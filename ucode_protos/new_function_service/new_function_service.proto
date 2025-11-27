@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package new_function_service;
+
+option go_package="genproto/new_function_service";
+
+import "new_function.proto";
+import "new_custom_event.proto";
+import "new_function_folder.proto";
+import "new_function_project.proto";

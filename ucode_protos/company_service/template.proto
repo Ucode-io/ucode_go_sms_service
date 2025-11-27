@@ -1,0 +1,66 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service TemplateMetadataService {
+    rpc Create(CreateTemplateMetadataReq) returns (TemplateMetadata) {}
+    rpc List(GetTemplateMetadataListReq) returns (GetTemplateMetadataListResponse) {}
+    rpc GetById(GetTemplateMetadataByIdReq) returns (TemplateMetadata) {}
+    rpc Update(UpdateTemplateMetadataReq) returns (TemplateMetadata) {}
+    rpc Delete(DeleteTemplateMetadataReq) returns (google.protobuf.Empty) {}
+}
+
+message CreateTemplateMetadataReq {
+    string name = 1;
+    string description = 2;
+    string photo = 3;
+    google.protobuf.Struct tables = 4;
+    google.protobuf.Struct functions = 5;
+    google.protobuf.Struct microfronts = 6;
+    string menu_id = 7;
+}
+
+message GetTemplateMetadataListReq {
+    int32 limit = 1;
+    int32 offset = 2;
+}
+
+message GetTemplateMetadataListResponse {
+    repeated TemplateMetadata templates = 1;
+    int32 count = 2;
+}
+
+message GetTemplateMetadataByIdReq {
+    string id = 1;
+}
+
+message UpdateTemplateMetadataReq {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string photo = 4;
+    google.protobuf.Struct tables = 5;
+    google.protobuf.Struct functions = 6;
+    google.protobuf.Struct microfronts = 7;
+}
+
+message DeleteTemplateMetadataReq {
+    string id = 1;
+}
+
+message TemplateMetadata {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string photo = 4;
+    google.protobuf.Struct tables = 5;
+    google.protobuf.Struct functions = 6;
+    google.protobuf.Struct microfronts = 7;
+    string created_at = 8;
+    string updated_at = 9;
+    int64 deleted_at = 10;
+}

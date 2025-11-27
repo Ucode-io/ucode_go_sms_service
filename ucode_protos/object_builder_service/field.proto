@@ -1,0 +1,161 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+
+
+service FieldService {
+    rpc Create(CreateFieldRequest) returns (Field) {}
+    rpc GetByID(FieldPrimaryKey) returns (Field) {}
+    rpc GetAll(GetAllFieldsRequest) returns (GetAllFieldsResponse) {}
+    rpc GetAllForItems(GetAllFieldsForItemsRequest) returns (AllFields) {}
+    rpc Update(Field) returns (Field) {}
+    rpc UpdateSearch(SearchUpdateRequest) returns (google.protobuf.Empty) {}
+    rpc Delete(FieldPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc GetAllByLabel(GetAllByLabelReq) returns (GetAllFieldsResponse) {}
+    rpc GetIdsByLabel(GetIdsByLabelReq) returns (GetIdsByLabelResponse) {}
+    
+}
+
+message CreateFieldRequest {
+    string default = 1;
+    string type = 2;
+    string index = 3;
+    string label = 4;
+    string slug = 5;
+    string table_id = 6;
+    google.protobuf.Struct attributes = 7;
+    string id = 8;
+    bool is_visible = 9;
+    string autofill_table = 10;
+    string autofill_field = 11;
+    bool unique = 12;
+    bool automatic = 13;
+    string project_id = 14;
+    string commit_id = 15;
+    string version_id = 16;
+    string relation_field = 17;
+    bool show_label = 18;
+    bool enable_multilanguage = 19;
+    bool hide_multilanguage = 20;
+    string minio_folder = 21;
+    string env_id = 22;
+    bool is_alt = 23;
+}
+
+message CreateFieldsRequest {
+    string id = 1;
+    string default = 2;
+    string type = 3;
+    string index = 4;
+    string label = 5;
+    string slug = 6;
+    bool required = 7;
+    google.protobuf.Struct attributes = 8;
+    bool is_visible = 9;
+    bool unique = 10;
+    bool automatic = 11;
+    string project_id = 12;
+    string commit_id = 13;
+    string minio_folder = 14;
+}
+
+message Field {
+    string id = 1;
+    string default = 2;
+    string type = 3;
+    string index = 4;
+    string label = 5;
+    string slug = 6;
+    string table_id = 7;
+    bool required = 8;
+    google.protobuf.Struct attributes = 9;
+    bool is_visible = 10;
+    string autofill_field = 11;
+    string autofill_table = 12;
+    string relation_id = 13;
+    bool unique = 14;
+    bool automatic = 15;
+    string project_id = 16;
+    string commit_id = 17;
+    string version_id = 18;
+    bool is_system = 19;
+    string relation_field = 20;
+    bool show_label = 21;
+    bool enable_multilanguage = 22;
+    bool hide_multilanguage = 23;
+    string minio_folder = 24;
+    string env_id = 25;
+    bool is_search = 26;
+    bool is_alt = 27;
+}
+
+message SearchUpdate {
+    string id = 1;
+    bool is_search = 2;
+}
+
+message SearchUpdateRequest {
+    string project_id = 1;
+    string table_slug = 2;
+    repeated SearchUpdate fields = 3;
+}
+
+message GetAllFieldsResponse {
+    repeated Field fields = 1;
+    int32 count = 2;
+    google.protobuf.Struct data = 3;
+}
+
+message GetAllFieldsRequest {
+    string table_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string search = 4;
+    string table_slug = 5;
+    bool with_many_relation = 6;
+    bool with_one_relation = 7;
+    string role_id = 8;
+    string project_id = 9;
+    string version_id = 10;
+}
+
+message FieldPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+}
+
+message GetAllFieldsForItemsRequest {
+    string collection = 1;
+    string role_id = 2;
+    string project_id = 3;
+    string version_id = 4;
+    string language_settings = 5;
+    bool with_relations = 6;
+}
+
+message AllFields {
+    string collection = 1;
+    google.protobuf.Struct data = 2;
+}
+
+message GetAllByLabelReq {
+    string project_id = 1;
+    string field_label = 2;
+    string table_id = 3;
+}
+
+message GetIdsByLabelResponse {
+    repeated string ids = 1;
+}
+
+message GetIdsByLabelReq {
+    string project_id = 1;
+    repeated string field_label = 2;
+    string table_id = 3;
+}

@@ -1,0 +1,17 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "client_service.proto";
+import "permission_service.proto";
+import "user_service.proto";
+import "session_service.proto";
+import "email.proto";
+import "company_service.proto";
+import "project_service.proto";
+import "apple.proto";
+import "login_strategy.proto";
+import "sync_user.proto";
+import "sms_otp_settings.proto";
+import "eimzo.proto";

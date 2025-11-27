@@ -1,0 +1,85 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service SyncUserService {
+    rpc CreateUser(CreateSyncUserRequest) returns (SyncUserResponse) {}
+    rpc CreateUsers(CreateSyncUsersRequest) returns (SyncUsersResponse) {}
+    rpc UpdateUser(UpdateSyncUserRequest) returns (SyncUserResponse) {}
+    rpc DeleteUser(DeleteSyncUserRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteManyUser(DeleteManyUserRequest) returns (google.protobuf.Empty) {}
+}
+
+message CreateSyncUserRequest {
+    string client_type_id = 1;
+    string role_id = 2;
+    string login = 3;
+    string email = 4;
+    string phone = 5;
+    string resource_environment_id = 6;
+    string table_slug = 7;
+    string password = 8;
+    string project_id = 9;
+    bool invite = 10;
+    string environment_id = 11;
+    repeated string login_strategy = 12;
+    string tin = 13;
+}
+
+message CreateSyncUsersRequest {
+    repeated CreateSyncUserRequest users = 1;
+}
+
+message UpdateSyncUserRequest {
+    string client_type_id = 1;
+    string role_id = 2;
+    string login = 3;
+    string email = 4;
+    string phone = 5;
+    string resource_environment_id = 6;
+    string table_slug = 7;
+    string password = 8;
+    string guid = 9;
+    string project_id = 10;
+    string env_id = 11;
+    string company_id = 12;
+    bool is_changed_login = 13;
+    bool is_changed_email = 14;
+    bool is_changed_phone = 15;
+    string tin = 16;
+    bool is_changed_tin = 17;
+}
+
+message SyncUserResponse {
+    bool is_user_exists = 1;
+    string user_id = 2;
+}
+message SyncUsersResponse {
+    repeated string user_ids = 1;
+}
+
+message DeleteSyncUserRequest {
+    string user_id = 1;
+    string company_id = 2;
+    string project_id = 3;
+    string client_type_id = 4;
+    string role_id = 5;
+    string environment_id = 6;
+}
+
+message DeleteManyUserRequest {
+    message User {
+        string user_id = 1;
+        string role_id = 3;
+        string client_type_id = 4;
+    }
+    repeated User users = 1;
+    string project_id = 2;
+    string company_id = 3;
+    string environment_id = 4;
+}

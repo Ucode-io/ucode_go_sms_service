@@ -1,0 +1,51 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "google/protobuf/empty.proto";
+
+
+service RedirectUrlService {
+  rpc Create(RedirectUrl) returns (RedirectUrl) {}
+  rpc Update(RedirectUrl) returns (RedirectUrl) {}
+  rpc GetSingle(GetSingleRedirectUrlReq) returns (RedirectUrl) {}
+  rpc GetList(GetListRedirectUrlReq) returns (GetListRedirectUrlRes) {}
+  rpc Delete(DeleteRedirectUrlReq) returns (google.protobuf.Empty) {}
+  rpc UpdateOrder(UpdateOrderRedirectUrlReq) returns (google.protobuf.Empty) {}
+}
+message UpdateOrderRedirectUrlReq {
+  repeated string ids = 1;
+}
+
+message RedirectUrl {
+  string id = 1;
+  string project_id = 2;
+  string env_id = 3;
+  string from = 4;
+  string to = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  int32 order = 8;
+}
+
+message GetSingleRedirectUrlReq {
+  string id = 1;
+}
+
+message GetListRedirectUrlReq {
+  string project_id = 1;
+  string env_id = 2;
+  string search = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+message GetListRedirectUrlRes {
+  repeated RedirectUrl redirect_urls = 1;
+  int32 count = 2;
+}
+
+message DeleteRedirectUrlReq {
+  string id = 1;
+}

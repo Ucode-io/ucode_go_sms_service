@@ -1,0 +1,48 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "google/protobuf/empty.proto";
+
+service LoginPlatformTypeLoginService {
+    rpc CreateLoginPlatformType(LoginPlatform) returns (LoginPlatform) {}
+    rpc UpdateLoginPlatformType(UpdateLoginPlatformTypeRequest) returns (LoginPlatform) {}
+    rpc GetLoginPlatformType(LoginPlatformTypePrimaryKey) returns (LoginPlatform){}
+    rpc GetListLoginPlatformType(GetListLoginPlatformTypeRequest) returns (GetListLoginPlatformTypeResponse) {}
+    rpc DeleteLoginPlatformType(LoginPlatformTypePrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message GetListLoginPlatformTypeRequest {
+    string environment_id = 1;
+}
+
+message LoginPlatformTypePrimaryKey {
+    string id = 1;
+}
+
+message GetListLoginPlatformTypeResponse {
+   repeated LoginPlatform items = 1;
+}
+
+message LoginPlatform {
+    string id = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    string type= 4;
+    LoginPlatformType data = 5;
+}
+
+message LoginPlatformType {
+    string team_id = 1;
+    string client_id = 2;
+    string key_id = 3;
+    string secret = 4;
+    string email = 5;
+    string password = 6;
+}
+
+message UpdateLoginPlatformTypeRequest {
+    string id = 1;
+    LoginPlatformType data = 2;
+}

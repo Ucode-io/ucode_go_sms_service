@@ -1,0 +1,73 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+// import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+enum SettingType {
+    LANGUAGE = 0;
+    CURRENCY = 1;
+    TIMEZONE = 2;
+}
+
+service SettingService {
+    rpc GetDefaultSettings(GetDefaultSettingsReq) returns (GetDefaultSettingsRes) {};
+    rpc GetAll(GetAllReq) returns (Setting) {};
+    rpc SetDefaultSettings(SetDefaultSettingsReq) returns (Setting) {};
+}
+
+message Language {
+    string id = 1;
+    string name = 2;
+    string short_name = 3;
+    string native_name = 4;
+}
+message Currency {
+    string id = 1;
+    string symbol = 2;
+    string name = 3;
+    string symbol_native = 4;
+    int32 decimal_digits = 5;
+    int32 rounding = 6;
+    string code = 7;
+    string name_plural = 8;
+}
+message Timezone {
+    string id = 1;
+    string name = 2;
+    string text = 3;
+}
+
+message Setting {
+    google.protobuf.Struct data = 1;
+    int32 count = 2;
+}
+
+message GetDefaultSettingsReq {
+    string project_id = 1;
+}
+
+message GetDefaultSettingsRes {
+    Language language = 1;
+    Currency currency = 2;
+    Timezone timezone = 3;
+}
+
+message GetAllReq {
+    SettingType type = 1;
+    string search = 2;
+    string project_id = 3;
+    int32 limit = 4;
+    int32 offset = 5;
+}
+
+message SetDefaultSettingsReq {
+    SettingType type = 1;
+    string id = 2;
+    string project_id = 3;
+}
+
+
+

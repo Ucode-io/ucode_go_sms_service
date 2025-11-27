@@ -1,0 +1,36 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+
+service EventLogsService {
+    rpc GetList(GetEventLogsListRequest) returns (GetEventLogListsResponse) {}
+    rpc GetSingle(GetEventLogById) returns (EventLog) {}
+}
+
+message GetEventLogsListRequest {
+    string table_slug = 1;
+    int32 offset = 2;
+    int32 limit = 3;
+    string project_id = 4;
+}
+
+message GetEventLogById {
+    string id = 1;
+    string project_id = 2;
+}
+
+message EventLog {
+    string guid = 1;
+    string id = 2;
+    string date = 3;
+    string table_slug = 4;
+    string effected_table = 5;
+    string project_id = 6;
+}
+
+message GetEventLogListsResponse {
+    repeated EventLog event_logs = 1;
+    int32 count = 2;
+}

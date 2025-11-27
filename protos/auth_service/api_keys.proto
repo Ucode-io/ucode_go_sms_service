@@ -1,0 +1,148 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+
+service ApiKeys {
+  rpc Create (CreateReq) returns (CreateRes) {}
+  rpc Update (UpdateReq) returns (UpdateRes) {}
+  rpc Get (GetReq) returns (GetRes) {}
+  rpc GetList (GetListReq) returns (GetListRes) {}
+  rpc Delete (DeleteReq) returns (DeleteRes) {}
+  rpc GenerateApiToken (GenerateApiTokenReq) returns (GenerateApiTokenRes) {}
+  rpc RefreshApiToken (RefreshApiTokenReq) returns (RefreshApiTokenRes) {}
+  rpc GetEnvID(GetReq) returns (GetRes) {}
+  rpc ListClientToken(ListClientTokenRequest) returns(ListClientTokenResponse) {}
+}
+
+message GenerateApiTokenReq {
+  string app_id = 1;
+  string app_secret = 2;
+}
+
+message GenerateApiTokenRes {
+  Token token = 1;
+}
+
+message RefreshApiTokenReq {
+  string refresh_token = 1;
+}
+
+message RefreshApiTokenRes {
+  Token token = 1;
+}
+
+message CreateReq {
+  string name = 1;
+  string project_id = 2;
+  string role_id = 3;
+  string environment_id = 4;
+  string client_type_id = 5;
+  int32 rps_limit = 6;
+  int32 monthly_request_limit = 7;
+  string client_platform_id = 8;
+  bool disable = 9;
+  string client_id = 10;
+}
+
+message CreateRes {
+  string id = 1;
+  string status = 2;
+  string name = 3;
+  string app_id = 4;
+  string app_secret = 5;
+  string role_id = 6;
+  string created_at = 7;
+  string updated_at = 8;
+  string environment_id = 9;
+  string project_id = 10;
+  string client_type_id = 11;
+  int32 rps_limit = 12;
+  int32 monthly_request_limit = 13;
+  string client_id = 14;
+  bool disable = 15;
+}
+
+message UpdateReq {
+  string id = 1;
+  string status = 2;
+  string name = 3;
+  string role_id = 4;
+  string project_id = 5;
+  string client_type_id = 6;
+  int32 rps_limit = 7;
+  int32 monthly_request_limit = 8;
+}
+
+message UpdateRes {
+  int32 row_effected = 1;
+}
+
+message GetReq {
+  string id = 1;
+}
+
+message GetRes {
+  string id = 1;
+  string status = 2;
+  string name = 3;
+  string app_id = 4;
+  string role_id = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  string app_secret = 8;
+  string environment_id = 9;
+  string project_id = 10;
+  string client_type_id = 11;
+  int32 rps_limit = 12;
+  int32 monthly_request_limit = 13;
+  int32 used_count = 14;
+  string client_id = 15;
+  bool disable = 16;
+  ClientPlatform client_platform = 17;
+}
+
+message GetListReq {
+  string environment_id = 1;
+  string project_id = 2;
+  int32 offset = 3;
+  int32 limit = 4;
+  string search = 5;
+  string role_id = 6;
+  string client_type_id = 7;
+  int32 rps_limit = 8;
+  int32 monthly_request_limit = 9;
+}
+
+message GetListRes {
+  repeated GetRes data = 1;
+  int32 count = 2;
+}
+
+message DeleteReq {
+  string id = 1;
+}
+
+message DeleteRes {
+  int32 row_effected = 1;
+}
+
+message ClientIdToken {
+  string id = 1;
+  string info = 2;
+  string given_time = 3;
+  string client_id = 4;
+}
+
+message ListClientTokenRequest {
+  string client_id = 1;
+  int32 offset = 2;
+  int32 limit = 3;
+}
+
+message ListClientTokenResponse {
+  int32 count = 1;
+  repeated ClientIdToken client_tokens = 2;
+}

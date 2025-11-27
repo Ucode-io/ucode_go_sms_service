@@ -1,0 +1,176 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "google/protobuf/struct.proto";
+
+enum ServiceType {
+    NOT_SPECIFIED = 0;
+    BUILDER_SERVICE = 1;
+    ANALYTICS_SERVICE = 2;
+    TEMPLATE_SERVICE = 3;
+    QUERY_SERVICE = 4;
+    FUNCTION_SERVICE = 5;
+    WEB_PAGE_SERVICE = 6;
+    API_REF_SERVICE = 7;
+    POSTGRES_BUILDER = 8;
+}
+
+enum ResourceType {
+    NOT_DECIDED = 0;
+    MONGODB = 1;
+    CLICKHOUSE = 2;
+    POSTGRESQL = 3;
+    REST = 4;
+    GITHUB = 5;
+    SMS = 6;
+    SMTP = 7;
+    GITLAB = 8;
+    GIT = 9;
+    BITBUCKET = 10;
+    SUPERSET = 11;
+    METABASE = 12;
+    TRANSCODER = 13;
+    MAILCHIMP = 14;
+}
+
+enum SettingType {
+    LANGUAGE = 0;
+    CURRENCY = 1;
+    TIMEZONE = 2;
+}
+
+message Resource {
+    message Credentials {
+        string host = 1;
+        string port = 2;
+        string username = 3;
+        string password = 4;
+        string database = 5;
+    }
+    ResourceType resource_type = 1;
+    Credentials credentials = 2;
+    string id = 3;
+    string title = 4;
+    bool is_configured = 5;
+    string vault_path = 6;
+    string project_id = 7;
+    string node_type = 8;
+    repeated Environment environments = 9;
+}
+
+message Environment {
+    string id = 1;
+    string project_id = 2;
+    string name = 3;
+    string display_color = 4;
+    string description = 5;
+    google.protobuf.Struct data = 6;
+    string access_type = 7;
+    string resource_environment_id = 8;
+    bool is_configured = 9;
+    bool default = 10;
+    string node_type = 11;
+}
+
+message EnvironmentWithResources {
+    message Resources {
+        int32 count = 1;
+        repeated Resource resources = 2;
+    }
+
+    string id = 1;
+    string project_id = 2;
+    string name = 3;
+    string display_color = 4;
+    string description = 5;
+    Resources resources = 6;
+    google.protobuf.Struct data = 7;
+    string access_type = 8;
+    string node_type = 9;
+    google.protobuf.Struct client_types = 10;
+    int32 resource_type = 11;
+    string resource_environment_id = 12;
+}
+
+message NewResource {
+    string id = 1;
+    string title = 2;
+    string project_id = 3;
+    string resource_type = 4;
+}
+
+message ResourceEnvironment {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+    bool is_configured = 5;
+    string vault_path = 6;
+    int32 service_type = 7;
+    int32 resource_type = 8;
+    string host = 9;
+    string port = 10;
+    string username = 11;
+    string database = 12;
+    bool default = 13;
+    string node_type = 14;
+    string access_type = 15;
+}
+
+message Empty {
+
+}
+
+message Language {
+    string id = 1;
+    string name = 2;
+    string short_name = 3;
+    string native_name = 4;
+}
+message Currency {
+    string id = 1;
+    string symbol = 2;
+    string name = 3;
+    string symbol_native = 4;
+    int32 decimal_digits = 5;
+    int32 rounding = 6;
+    string code = 7;
+    string name_plural = 8;
+}
+message Timezone {
+    string id = 1;
+    string name = 2;
+    string text = 3;
+}
+
+message ClickhouseCredentials {
+    string host = 1;
+    string port = 2;
+    string username = 3;
+    string password = 4;
+    string database = 5;
+    int32 max_connections = 6;
+    int32 max_conn_idle_time_in_min = 7;
+}
+
+message MongodbCredentials {
+    string host = 1;
+    string port = 2;
+    string username = 3;
+    string password = 4;
+    string database = 5;
+    int32 max_connections = 6;
+    int32 max_conn_idle_time_in_min = 7;
+}
+
+message PostgresSqlCredentials {
+    string host = 1;
+    string port = 2;
+    string username = 3;
+    string password = 4;
+    string database = 5;
+    int32 max_connections = 6;
+    int32 max_conn_idle_time_in_min = 7;
+}

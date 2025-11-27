@@ -1,0 +1,158 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+
+service ViewService {
+    rpc Create(CreateViewRequest) returns (View) {}
+    rpc GetList(GetAllViewsRequest) returns (GetAllViewsResponse) {}
+    rpc GetSingle(ViewPrimaryKey) returns (View) {}
+    rpc Update(View) returns (View) {}
+    rpc Delete(ViewPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc ConvertHtmlToPdf(HtmlBody) returns (PdfBody) {}
+    rpc ConvertTemplateToHtml(HtmlBody) returns (HtmlBody) {}
+    rpc UpdateViewOrder(UpdateViewOrderRequest) returns (google.protobuf.Empty) {}
+}
+
+message UpdateViewOrderRequest {
+    string table_slug = 1;
+    string project_id = 2;
+    repeated string ids = 3;
+
+}
+
+
+message CreateViewRequest {
+    string table_slug = 1;
+    string type = 2;
+    string main_field = 3;
+    string name = 4;
+    DisableDates disable_dates = 5;
+    repeated string view_fields = 6;
+    repeated QuickFilter quick_filters = 7;
+    repeated string users = 8;
+    repeated string group_fields = 9;
+    repeated string columns = 10;
+    string calendar_from_slug = 11;
+    string calendar_to_slug = 12;
+    int32 time_interval = 13;
+    bool multiple_insert = 14;
+    string status_field_slug = 15;
+    string relation_table_slug = 16;
+    bool is_editable = 17;
+    string relation_id = 18;
+    string multiple_insert_field = 19;
+    repeated string updated_fields = 20;
+    string app_id = 21;
+    string table_label = 22;
+    string default_limit = 23;
+    google.protobuf.Struct attributes = 24;
+    string project_id = 25;
+    int64 commit_id = 26;
+    string commit_guid = 27;
+    bool default_editable = 28;
+    int32 order = 29;
+    string name_uz = 30;
+    string name_en = 31;
+    string env_id = 32;
+    string id = 33;
+    string menu_id = 34;
+    bool is_relation_view = 35;
+}
+
+message QuickFilter {
+    string field_id = 1;
+    string default_value = 2;
+}
+
+message View {
+    string id = 1;
+    string table_slug = 2;
+    string type = 3;
+    string name = 4;
+    string main_field = 5;
+    DisableDates disable_dates = 6;
+    repeated string columns = 7;
+    repeated QuickFilter quick_filters = 8;
+    repeated string users = 9;
+    repeated string view_fields = 10;
+    repeated string group_fields = 11;
+    string calendar_from_slug = 12;
+    string calendar_to_slug = 13;
+    int32 time_interval = 14;
+    bool multiple_insert = 15;
+    string status_field_slug = 16;
+    bool is_editable = 17;
+    string relation_table_slug = 18;
+    string relation_id = 19;
+    string multiple_insert_field = 20;
+    repeated string updated_fields = 21;
+    string app_id = 22;
+    string table_label = 23;
+    string default_limit = 24;
+    google.protobuf.Struct attributes = 25;
+    string project_id = 26;
+    bool default_editable = 27;
+    Navigate navigate = 28;
+    string function_path = 29;
+    int32 order = 30;
+    string name_uz = 31;
+    string name_en = 32;
+    string env_id = 33;
+    string menu_id = 34;
+    bool is_relation_view = 35;
+}
+
+message Navigate {
+    string url = 1;
+    repeated KeyStringValue params = 2;
+    repeated KeyStringValue cookie = 3;
+    repeated KeyStringValue headers = 4;
+}
+
+message KeyStringValue {
+    string key = 1;
+    string value = 2;
+}
+
+message GetAllViewsResponse {
+    repeated View views = 1;
+    int32 count = 2;
+}
+
+message GetAllViewsRequest {
+    string table_slug = 1;
+    string app_id = 2;
+    string project_id = 3;
+    string role_id = 4;
+    string menu_id = 5;
+}
+
+message ViewPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+    string table_slug = 4;
+}
+
+message DisableDates {
+    string table_slug = 1;
+    string time_from_slug = 2;
+    string time_to_slug = 3;
+    string day_slug = 4;
+}
+
+message HtmlBody {
+    string html = 1;
+    google.protobuf.Struct data = 2;
+    string project_id = 3;
+    string version_id = 4;
+}
+
+message PdfBody {
+    string link = 1;
+}

@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+import "google/protobuf/empty.proto";
+
+
+
+service ObjectBuilderPingService {
+    rpc Ping (google.protobuf.Empty) returns (PingResponse) {}
+}
+
+
+message PingResponse {
+    string message = 1;
+}

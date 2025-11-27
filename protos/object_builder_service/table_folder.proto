@@ -1,0 +1,58 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+service TableFolderService {
+    rpc Create(TableFolderRequest) returns (CreateTableFolderResponse) {}
+    rpc GetByID(TableFolderPrimaryKey) returns (TableFolder) {}
+    rpc GetAll(GetAllTableFoldersRequest) returns (GetAllTableFoldersResponse) {}
+    rpc Update(TableFolder) returns (google.protobuf.Empty) {}
+    rpc Delete(TableFolderPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message TableFolderRequest {
+    string title = 1;
+    string project_id = 2;
+    string parent_id = 3;
+    string icon = 4;
+    string app_id = 5;
+}
+
+message CreateTableFolderResponse {
+    string id = 1;
+    string title = 2;
+    string project_id = 3;
+    string icon = 4;
+    string app_id = 5;
+}
+
+message TableFolder {
+    string id = 1;
+    string title = 2;
+    string project_id = 3;
+    string parent_id = 4;
+    string icon = 5;
+    string app_id = 6;
+}
+
+
+message GetAllTableFoldersResponse {
+    repeated TableFolder folders = 1;
+    int32 count = 2;
+}
+
+message TableFolderPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message GetAllTableFoldersRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    string app_id = 5;
+}

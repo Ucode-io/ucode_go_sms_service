@@ -1,0 +1,31 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+service VisualizationService {
+    rpc GetMetabaseDashboards(GetMetabaseDashboardsRequest) returns (GetMetabaseDashboardsResponse) {};
+    rpc GetMetabasePublicUrl(GetMetabasePublicUrlRequest) returns (GetMetabasePublicUrlResponse) {};
+}
+
+message GetMetabaseDashboardsRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message GetMetabaseDashboardsResponse {
+    repeated MetabaseDashboard dashboards = 1;
+}
+
+message MetabaseDashboard {
+    int32 id = 1;
+    string name = 2;
+}
+
+message GetMetabasePublicUrlRequest {
+    int32 dashboard_id = 1;
+}
+
+message GetMetabasePublicUrlResponse {
+    string url = 1;
+}

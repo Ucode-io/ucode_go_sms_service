@@ -1,0 +1,65 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service FolderGroupService {
+    rpc Create(CreateFolderGroupRequest) returns (FolderGroup) {};
+    rpc GetByID(FolderGroupPrimaryKey) returns (FolderGroup) {};
+    rpc Update(UpdateFolderGroupRequest) returns (FolderGroup) {};
+    rpc GetAll(GetAllFolderGroupRequest) returns (GetAllFolderGroupResponse) {};
+    rpc Delete(FolderGroupPrimaryKey) returns (google.protobuf.Empty) {};
+}
+
+message FolderGroup {
+    string id = 1;
+    string table_id = 2;
+    string name = 3;
+    string comment = 4;
+    string code = 5;
+    string project_id = 6;
+    string parent_id = 7;
+    google.protobuf.Struct items = 8;
+    string type = 9;
+}
+
+message CreateFolderGroupRequest {
+    string table_id = 1;
+    string name = 2;
+    string comment = 3;
+    string code = 4;
+    string project_id = 5;
+    string parent_id = 6;
+}
+
+message FolderGroupPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message UpdateFolderGroupRequest {
+    string id = 1;
+    string table_id = 2;
+    string name = 3;
+    string comment = 4;
+    string code = 5;
+    string project_id = 6;
+    string parent_id = 7;
+} 
+
+message GetAllFolderGroupRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string table_id = 3;
+    string project_id = 4;
+    string parent_id = 5;
+    google.protobuf.Struct data = 6;
+}
+
+message GetAllFolderGroupResponse {
+    repeated FolderGroup folder_groups = 1;
+    int32 count = 2;
+}

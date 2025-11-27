@@ -1,0 +1,74 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+service VersionService {
+    rpc Create(CreateVersionRequest) returns (Version) {}
+    rpc GetList(GetVersionListRequest) returns (GetVersionListResponse) {}
+    rpc Update(Version) returns (google.protobuf.Empty) {}
+    rpc CreateMany(CreateManyVersionRequest) returns (google.protobuf.Empty) {}
+    rpc GetSingle(VersionPrimaryKey) returns (Version) {}
+    rpc UpdateLive(VersionPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message GetVersionListRequest {
+    string project_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string version_id = 4;
+    bool live = 5;
+    string from_date = 6;
+    string to_date = 7;
+}
+
+message Version {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    bool is_current = 4;
+    int32 version_number = 5;
+    string project_id = 6;
+    string created_at = 7;
+    string user_info = 8;
+}
+
+message CreateVersionRequest {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    bool is_current = 4;
+    int32 version_number = 5;
+    string project_id = 6;
+    string user_info = 7;
+}
+
+message GetVersionListResponse {
+    repeated Version versions = 1;
+    int32 count = 2;
+    string project_id = 3;
+}
+
+message CreateManyVersionRequest {
+    repeated Version versions = 1;
+    string project_id = 2;
+}
+
+message CreateManyVersionResponse {
+    repeated Version versions = 1;
+}
+
+message VersionPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+    bool live = 4;
+}
+
+message PublishVersionRequest {
+    string env_id = 1;
+    Version version = 2;
+}

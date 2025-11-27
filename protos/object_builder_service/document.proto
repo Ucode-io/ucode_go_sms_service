@@ -1,0 +1,58 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+service DocumentService {
+    rpc Create(CreateDocumentRequest) returns (Document) {}
+    rpc GetList(GetAllDocumentsRequest) returns (GetAllDocumentsResponse) {}
+    rpc GetSingle(DocumentPrimaryKey) returns (Document) {}
+    rpc Update(Document) returns (google.protobuf.Empty) {}
+    rpc Delete(DocumentPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+
+message CreateDocumentRequest {
+    string file_link = 1;
+    string object_id = 2;
+    int32 size = 3;
+    string type = 4;
+    string table_slug = 5;
+    string name = 6;
+    repeated string tags = 7;
+    string project_id = 8;
+}
+
+message Document {
+    string id = 1;
+    string file_link = 2;
+    string object_id = 3;
+    int32 size = 4;
+    string type = 5;
+    string table_slug = 6;
+    string name = 7;
+    string created_at = 8;
+    repeated string tags = 9;
+    string project_id = 10;
+}
+
+message GetAllDocumentsResponse {
+    repeated Document documents = 1;
+    int32 count = 2;
+}
+
+message GetAllDocumentsRequest {
+    string object_id = 1;
+    string tags = 2;
+    string start_date = 3;
+    string end_date = 4;
+    string project_id = 5;
+}
+
+message DocumentPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}

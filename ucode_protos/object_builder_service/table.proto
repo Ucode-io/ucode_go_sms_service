@@ -1,0 +1,254 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "field.proto";
+import "section.proto";
+import "layout.proto";
+
+service TableService {
+    rpc Create(CreateTableRequest) returns (CreateTableResponse) {}
+    rpc GetByID(TablePrimaryKey) returns (Table) {}
+    rpc GetAll(GetAllTablesRequest) returns (GetAllTablesResponse) {}
+    rpc Update(UpdateTableRequest) returns (Table) {}
+    rpc Delete(TablePrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc GetListTableHistory(GetTableHistoryRequest) returns (GetTableHistoryResponse) {}
+    rpc GetTableHistoryById(TableHistoryPrimaryKey) returns (Table) {}
+    rpc RevertTableHistory(RevertTableHistoryRequest) returns (TableHistory) {}
+    rpc InsertVersionsToCommit(InsertVersionsToCommitRequest) returns (TableHistory) {}
+
+    rpc GetTablesByLabel(GetTablesByLabelReq) returns (GetAllTablesResponse) {}
+    rpc GetFieldsByTable(GetFieldsByTableReq) returns (GetFieldsByTableRes) {}
+    rpc GetChart(ChartPrimaryKey) returns (GetChartResponse) {}
+}
+
+message InsertVersionsToCommitRequest {
+    string id = 1;
+    repeated string version_ids = 2;
+    string project_id = 3;
+}
+
+message GetTableHistoryRequest {
+    string table_id = 1;
+    string project_id = 2;
+}
+
+message TableHistoryPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message RevertTableHistoryRequest {
+    string id = 1;
+    string project_id = 2;
+    string author_id = 3;
+    string commit_type = 4;
+    string name = 5;
+}
+
+message TableHistory {
+    string id = 1;
+    string created_at = 2;
+    repeated string version_ids = 3;
+    string author_id = 4;
+    string commit_type = 5;
+    string name = 6;
+}
+
+message GetTableHistoryResponse {
+    repeated TableHistory items = 1;
+}
+
+message CreateTableRequest {
+    string label = 1;
+    string description = 2;
+    string slug = 3;
+    repeated CreateFieldsRequest fields = 4;
+    bool show_in_menu = 5;
+    string icon = 6;
+    string subtitle_field_slug = 7;
+    repeated Section sections = 8;
+    string app_id = 9;
+    IncrementID increment_id = 10;
+    string project_id = 11;
+    string commit_id = 12;
+    string version_id = 13;
+    string folder_id = 14;
+    string author_id = 15;
+    string commit_type = 16;
+    string name = 17;
+    bool is_cached = 18;
+    repeated LayoutRequest layouts = 19;
+    bool default_editable = 20;
+    bool soft_delete = 21;
+    bool order_by = 22;
+    google.protobuf.Struct attributes = 23;
+    string env_id = 24;
+    string id = 25;
+    string view_id = 26;
+    string layout_id = 27;
+    bool is_login_table = 29;
+    string menu_id = 30;
+}
+
+message IncrementID {
+    bool with_increment_id = 1;
+    int32 digit_number = 2;
+    string prefix = 3;
+}
+
+message CreateTableResponse {
+    string id = 1;
+    string label = 2;
+    string description = 3;
+    string slug = 4;
+    repeated Field fields = 5;
+    bool show_in_menu = 6;
+    string icon = 7;
+    string subtitle_field_slug = 8;
+    repeated Section sections = 9;
+    IncrementID increment_id = 10;
+    bool is_cached = 11;
+    bool default_editable = 12;
+    bool soft_delete = 13;
+    google.protobuf.Struct attributes = 14;
+    Permission record_permission = 15;
+}
+
+message UpdateTableRequest {
+    string id = 1;
+    string label = 2;
+    string description = 3;
+    string slug = 4;
+    bool show_in_menu = 5;
+    string icon = 6;
+    string subtitle_field_slug = 7;
+    bool is_visible = 8;
+    bool is_own_table = 9;
+    IncrementID increment_id = 10;
+    string project_id = 11;
+    string folder_id = 12;
+    string author_id = 13;
+    string commit_type = 14;
+    string name = 15;
+    bool is_cached = 16;
+    bool default_editable = 17;
+    bool soft_delete = 18;
+    bool is_login_table = 19;
+    google.protobuf.Struct attributes = 20;
+    bool order_by = 21;
+    string env_id = 22;
+}
+
+message Table {
+    string id = 1;
+    string label = 2;
+    string description = 3;
+    string slug = 4;
+    bool show_in_menu = 5;
+    string icon = 6;
+    string subtitle_field_slug = 7;
+    bool is_visible = 8;
+    bool is_own_table = 9;
+    IncrementID increment_id = 10;
+    string project_id = 11;
+    string folder_id = 12;
+    string author_id = 13;
+    CommitInfo commit_info = 14;
+    bool is_cached = 15;
+    Permission record_permissions = 16;
+    bool default_editable = 17;
+    bool soft_delete = 18;
+    bool is_login_table = 19;
+    google.protobuf.Struct attributes = 20;
+    bool order_by = 21;
+    bool exists = 22;
+}
+
+message CommitInfo {
+    string id = 1;
+    string commit_type = 2;
+    string created_at = 3;
+    string name = 4;
+    repeated string version_ids = 5;
+}
+
+message GetAllTablesResponse {
+    repeated Table tables = 1;
+    int32 count = 2;
+}
+
+message TablePrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string version_id = 3;
+    string author_id = 4;
+    string commit_type = 5;
+    string name = 6;
+    string env_id = 7;
+}
+
+message GetAllTablesRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    string version_id = 5;
+    string folder_id = 6;
+    bool is_login_table = 7;
+    string role_id = 8;
+}
+
+message Permission {
+    string read = 1;
+    string write = 2;
+    string update = 3;
+    string delete = 4;
+    string guid = 5;
+    bool is_public = 6;
+    bool is_have_condition = 7;
+    string delete_all = 8;
+    string add_filter = 9;
+    string field_filter = 10;
+    string fix_column = 11;
+    string tab_group = 12;
+    string columns = 13;
+    string group = 14;
+    string excel_menu = 15;
+    string search_button = 16;
+    string view_create = 17;
+    string share_modal = 18;
+    string settings = 19;
+    string automation = 20;
+    string language_btn = 21;
+    string pdf_action = 22;
+    string add_field = 23;
+}
+
+message GetTablesByLabelReq {
+    string label = 1;
+    string project_id = 2;
+}
+
+message GetFieldsByTableReq {
+    string project_id = 1;
+    string table_label = 2;
+}
+
+message GetFieldsByTableRes {
+    Table table = 1;
+    repeated Field fields = 2;
+}
+
+message ChartPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message GetChartResponse {
+    string dbml = 1;
+}

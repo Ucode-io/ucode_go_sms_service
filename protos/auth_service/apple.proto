@@ -1,0 +1,43 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "google/protobuf/empty.proto";
+
+service AppleIdLoginService {
+    rpc CreateAppleIdSettings(AppleIdSettings) returns (AppleIdSettings) {}
+    rpc UpdateAppleIdSettings(AppleIdSettings) returns (AppleIdSettings) {}
+    rpc GetAppleIdSettings(AppleIdSettingsPrimaryKey) returns (AppleIdSettings){}
+    rpc GetListAppleIdSettings(GetListAppleIdSettingsRequest) returns (GetListAppleIdSettingsResponse) {}
+    rpc DeleteAppleIdSettings(AppleIdSettingsPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message GetListAppleIdSettingsRequest {
+    string project_id = 1;
+}
+
+message AppleIdSettingsPrimaryKey {
+    string id = 1;
+}
+
+message GetListAppleIdSettingsResponse {
+   repeated AppleIdSettings items = 1;
+}
+
+
+message AppleIdSettings {
+    string id = 1;
+    string team_id = 2;
+    string client_id = 3;
+    string key_id = 4;
+    string secret = 5;
+    string project_id = 6;
+}
+
+message AppleId {
+    string team_id = 1;
+    string client_id = 2;
+    string key_id = 3;
+    string secret = 4;
+}

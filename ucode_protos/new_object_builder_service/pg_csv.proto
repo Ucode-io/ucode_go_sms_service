@@ -1,0 +1,10 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "pg_object_builder.proto";
+
+service CSVService {
+    rpc GetListInCSV(CommonMessage) returns (CommonMessage) {}
+}

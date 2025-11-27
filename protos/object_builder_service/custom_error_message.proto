@@ -1,0 +1,67 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+service CustomErrorMessageService {
+    rpc Create(CreateCustomErrorMessage) returns (CustomErrorMessage) {}
+    rpc GetList(GetCustomErrorMessageListRequest) returns (GetCustomErrorMessageListResponse) {}
+    rpc GetListForObject(GetListForObjectRequest) returns (GetCustomErrorMessageListResponse) {}
+    rpc Update(CustomErrorMessage) returns (google.protobuf.Empty) {}
+    rpc GetById(CustomErrorMessagePK) returns (CustomErrorMessage) {}
+    rpc Delete(CustomErrorMessagePK) returns (google.protobuf.Empty) {}
+}
+
+message GetListForObjectRequest {
+    string project_id = 1;
+    string language_id = 2;
+    string action_type = 3;
+    string table_slug = 4;
+    string table_id = 5;
+}
+
+
+message CustomErrorMessagePK {
+    string id = 1;
+    string project_id = 2;
+}
+
+message CreateCustomErrorMessage {
+    string project_id = 1;
+    string table_id = 2;
+    string message = 3;
+    string error_id = 4;
+    int32 code = 5;
+    string language_id = 6;
+    string action_type = 7;
+}
+
+message CustomErrorMessage {
+    string id = 1;
+    string table_id = 2;
+    string message = 3;
+    string error_id = 4;
+    int32 code = 5;
+    string language_id = 6;
+    string project_id = 7;
+    string action_type = 8;
+}
+
+message VariableForCustomErrorMessage {
+    string key  = 1;
+    string value  = 2;
+}
+
+message GetCustomErrorMessageListResponse {
+    repeated CustomErrorMessage custom_error_messages = 1;
+    int32 count = 2;
+}
+
+message GetCustomErrorMessageListRequest {
+    string table_slug = 1;
+    string project_id = 2;
+    string table_id = 3;
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package doc_generator_service;
+option go_package = "genproto/doc_generator_service";
+
+import "google/protobuf/struct.proto";
+
+
+// Document Generation Service for HTML conversion and document generation
+service DocumentGeneratorService {
+    // Convert HTML to PDF or DOCX format
+    rpc ConvertHtml(ConvertHtmlRequest) returns (ConvertHtmlResponse);
+    
+    // Generate document from template
+    rpc GenerateDocument(GenerateDocumentRequest) returns (GenerateDocumentResponse);
+}
+
+// Request message for HTML conversion
+message ConvertHtmlRequest {
+    bytes data = 1;          // HTML content as bytes
+    string input_format = 2; // Input format (HTML)
+    string output_format = 3; // Desired output format (PDF or DOCX)
+}
+
+// Response message for HTML conversion
+message ConvertHtmlResponse {
+    bool success = 1;              // Conversion success status
+    bytes data = 2; // Metadata about the conversion
+    string file_name = 4;          // Name of converted file
+    string output_format = 5;      // Output format as string
+    int64 conversion_time = 6;     // Conversion time in milliseconds
+    string error_message = 7;      // Error message if conversion failed
+}
+
+// Request message for document generation
+message GenerateDocumentRequest {
+    string link = 1;                        // Link to template file
+    google.protobuf.Struct data = 2;        // Template data as structured object
+}
+
+// Response message for document generation
+message GenerateDocumentResponse {
+    bool success = 1;              // Generation success status
+    bytes pdf_content = 2;         // PDF content as bytes
+    string error_message = 3;      // Error message if generation failed
+}

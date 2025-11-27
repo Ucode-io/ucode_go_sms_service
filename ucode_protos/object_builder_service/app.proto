@@ -1,0 +1,83 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "table.proto";
+
+service AppService {
+    rpc Create(AppRequest) returns (CreateAppResponse) {}
+    rpc GetByID(AppPrimaryKey) returns (App) {}
+    rpc GetAll(GetAllAppsRequest) returns (GetAllAppsResponse) {}
+    rpc Update(UpdateAppRequest) returns (google.protobuf.Empty) {}
+    rpc Delete(AppPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message AppRequest {
+    string name = 1;
+    string description = 2;
+    repeated string table_ids = 3;
+    string icon = 4;
+    string project_id = 5;
+    int64 commit_id = 6;
+    string commit_guid = 7;
+}
+
+message CreateAppResponse {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    repeated string table_ids = 4;
+    string icon = 5;
+}
+
+message App {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    repeated Table tables = 4;
+    string icon = 5;
+    message Permission {
+        bool read = 1;
+        bool update = 2;
+        bool delete = 3;
+        bool create = 4;
+    }
+    Permission permission = 6;
+    bool is_system = 7;
+}
+
+message UpdateAppRequest {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    repeated UpdateTable tables = 4;
+    string icon = 5;
+    string project_id = 6;
+}
+
+message GetAllAppsResponse {
+    repeated App apps = 1;
+    int32 count = 2;
+}
+
+message AppPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string role_id = 3;
+}
+
+message GetAllAppsRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+    string project_id = 4;
+    string role_id = 5;
+}
+
+message UpdateTable {
+    string table_id = 1;
+    bool is_visible = 2;
+    bool is_own_table = 3;
+}

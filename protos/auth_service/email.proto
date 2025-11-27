@@ -1,0 +1,51 @@
+syntax="proto3";
+// 
+package auth_service;
+option go_package="genproto/auth_service";
+import "google/protobuf/empty.proto";
+
+service EmailOtpService {
+    rpc Create(Email) returns (Email) {}
+    rpc GetEmailByID(EmailOtpPrimaryKey) returns (Email) {}
+
+    rpc CreateEmailSettings(EmailSettings) returns (EmailSettings) {}
+    rpc UpdateEmailSettings(UpdateEmailSettingsRequest) returns (EmailSettings) {}
+    rpc GetListEmailSettings(GetListEmailSettingsRequest) returns (UpdateEmailSettingsResponse) {}
+    rpc DeleteEmailSettings(EmailSettingsPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message GetListEmailSettingsRequest {
+    string project_id = 1;
+}
+
+message EmailSettingsPrimaryKey {
+    string id = 1;
+}
+
+message UpdateEmailSettingsResponse {
+   repeated EmailSettings items = 1;
+}
+
+message UpdateEmailSettingsRequest {
+    string id = 1;
+    string email = 2;
+    string password = 4;
+}
+
+message EmailSettings {
+    string id = 1;
+    string email = 2;
+    string project_id = 3;
+    string password = 4;
+}
+
+message EmailOtpPrimaryKey {
+    string id = 1;
+}
+
+message Email {
+    string email = 1;
+    string otp = 2;
+    string expires_at = 3;
+    string id = 4;
+}

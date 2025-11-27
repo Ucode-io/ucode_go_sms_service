@@ -1,0 +1,17 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+
+service AuthPingService {
+    rpc Ping (PingRequest) returns (PingResponse) {}
+}
+
+message PingRequest {
+    string message = 1;
+}
+
+message PingResponse {
+    string message = 1;
+}

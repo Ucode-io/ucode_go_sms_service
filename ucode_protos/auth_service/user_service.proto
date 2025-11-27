@@ -1,0 +1,280 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+import "client_service.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (User) {}
+    rpc GetUserByID(UserPrimaryKey) returns (User) {}
+    rpc GetUserListByIDs(UserPrimaryKeyList) returns (GetUserListResponse) {}
+    rpc GetUserList(GetUserListRequest) returns (GetUserListResponse) {}
+    rpc UpdateUser(UpdateUserRequest) returns (User) {}
+    rpc DeleteUser(UserPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc ResetPassword(ResetPasswordRequest) returns (User) {}
+    rpc SendMessageToEmail(SendMessageToEmailRequest) returns (google.protobuf.Empty) {}
+
+    rpc AddUserRelation(AddUserRelationRequest) returns (UserRelation) {}
+    rpc RemoveUserRelation(UserRelationPrimaryKey) returns (UserRelation) {}
+
+    rpc UpsertUserInfo(UpsertUserInfoRequest) returns (UserInfo) {}
+
+    rpc V2CreateUser(CreateUserRequest) returns (User) {}
+    rpc V2GetUserByID(UserPrimaryKey) returns (User) {}
+    rpc V2GetUserListByIDs(UserPrimaryKeyList) returns (GetUserListResponse) {}
+    rpc V2GetUserList(GetUserListRequest) returns (GetUserListResponse) {}
+    rpc V2UpdateUser(UpdateUserRequest) returns (User) {}
+    rpc V2DeleteUser(UserPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc V2ResetPassword(V2UserResetPasswordRequest) returns (User) {}
+    rpc AddUserToProject(AddUserToProjectReq) returns (AddUserToProjectRes) {}
+    rpc GetProjectsByUserId(GetProjectsByUserIdReq) returns (GetProjectsByUserIdRes) {}
+    rpc V2GetUserByLoginTypes(GetUserByLoginTypesRequest) returns (GetUserByLoginTypesResponse) {}
+    rpc RegisterUserViaEmail(CreateUserRequest) returns (User) {}
+    rpc RegisterWithGoogle(RegisterWithGoogleRequest) returns (User) {}
+    rpc GetListSetting(GetListSettingReq) returns (Setting) {}
+    rpc GetUserByUsername(GetUserByUsernameRequest) returns (User) {}
+    rpc GetUserProjects(UserPrimaryKey) returns (GetUserProjectsRes) {}
+    rpc GetUserProjectClientTypes(UserInfoPrimaryKey) returns (GetUserProjectClientTypesResponse) {}
+}
+
+
+message GetUserByUsernameRequest {
+    string username = 1;
+    string node_type = 2;
+}
+
+message UserCompany {
+    string id = 1;
+    repeated string project_ids = 2;
+}
+
+message GetUserProjectsRes {
+    repeated UserCompany companies = 1;
+}
+
+message Setting {
+    google.protobuf.Struct data = 1;
+    int32 count = 2;
+}
+
+
+enum SettingType {
+    LANGUAGE = 0;
+//    CURRENCY = 1;
+    TIMEZONE = 2;
+}
+
+message GetListSettingReq {
+    SettingType type = 1;
+    string search = 2;
+    string project_id = 3;
+    int32 limit = 4;
+    int32 offset = 5;
+    string node_type = 6;
+}
+
+message RegisterWithGoogleRequest {
+    string email = 1;
+    string project_id = 2;
+    string company_id = 3;
+    string client_type_id = 4;
+    string resource_environment_id = 5;
+    string name = 6;
+    int32 resource_type = 7;
+    string node_type = 8;
+}
+
+message GetUserByLoginTypesResponse {
+    string user_id = 1;
+}
+
+message GetUserByLoginTypesRequest {
+   string email = 1;
+   string phone = 2;
+   string login = 3;
+   int32 resource_type = 4;
+   string node_type = 5;
+   string project_id = 6;
+}
+
+message GetProjectsByUserIdReq {
+    string user_id = 1;
+    string node_type = 2;
+}
+
+message UserProject {
+    string project_id = 1;
+    string env_id = 2;
+}
+
+message GetProjectsByUserIdRes {
+    repeated UserProject user_projects = 1;
+}
+
+message AddUserToProjectReq {
+    string user_id = 1;
+    string project_id = 2;
+    string role_id = 3;
+    int32 active = 4;
+    string company_id = 5;
+    int32 resource_type = 6;
+    string client_type_id = 7;
+    string table_slug = 8;
+    string env_id = 9;
+    string node_type = 10;
+    string status = 11;
+}
+
+message AddUserToProjectRes {
+    string user_id = 1;
+    string company_id = 2;
+    string project_id = 3;
+    string table_slug = 4;
+    string client_type_id = 5;
+    string role_id = 6;
+    string env_id = 7;
+}
+
+message UpsertUserInfoRequest {
+    string user_id = 1;
+    google.protobuf.Struct data = 2;
+}
+
+message CreateUserRequest {
+    string login = 1;
+    string password = 2;
+    string email = 3;
+    string phone = 4;
+    string name = 5;
+    string photo_url = 6;
+
+    string company_id = 7;
+    string project_id = 8;
+    string role_id = 9;
+    string client_type_id = 10;
+    string client_platform_id = 11;
+    int32 active = 12;
+    string expires_at = 13;
+    string resource_environment_id = 14;
+    string base_url = 15;
+    string year_of_birth = 16;
+    int32 resource_type = 17;
+    bool invite = 18;
+    string environment_id = 19;
+    string node_type = 20;
+    string tin = 21;
+    google.protobuf.Struct additional_data = 22;
+}
+
+message UserPrimaryKey {
+    string id = 1;
+    string resource_environment_id = 2;
+    int32 resource_type = 3;
+    bool is_test = 4;
+    string company_id = 5;
+    string project_id = 6;
+    string client_type_id = 7;
+    string node_type = 8;
+}
+
+message UserPrimaryKeyList {
+    repeated string ids = 1;
+    string project_id = 2;
+    int32 resource_type = 3;
+    string node_type = 4;
+}
+
+message GetUserListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string client_platform_id = 4;
+    string client_type_id = 5;
+    string project_id = 6;
+    string resource_environment_id = 7;
+    int32 resource_type = 8;
+    string node_type = 9;
+}
+
+message GetUserListResponse {
+    int32 count = 1;
+    repeated User users = 2;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string login = 2;
+    string email = 3;
+    string phone = 4;
+    string name = 5;
+    string photo_url = 6;
+
+    string company_id = 7;
+    string project_id = 8;
+    string role_id = 9;
+    string client_type_id = 10;
+    string client_platform_id = 11;
+    int32 active = 12;
+    string expires_at = 13;
+    string language_id = 14;
+    string timezone_id = 15;
+    int32 resource_type = 16;
+    string resource_environment_id = 17;
+    string environment_id = 18;
+    string node_type = 19;
+    string status = 20;
+}
+
+message AddUserRelationRequest {
+    string user_id = 1;
+    string relation_id = 2;
+    string node_type = 3;
+}
+
+message UserRelationPrimaryKey {
+    string user_id = 1;
+    string relation_id = 2;
+}
+
+message UserInfoPrimaryKey {
+    string user_id = 1;
+    string project_id = 2;
+}
+
+message ResetPasswordRequest {
+    string token = 1;
+    string password = 2;
+    string user_id = 3;
+    string node_type = 4;
+    string login = 5;
+    string email = 6;
+    string phone = 7;
+    string tin = 8;
+}
+
+message SendMessageToEmailRequest {
+    string email = 1;
+    string base_url = 2;
+    string token = 3;
+    string node_type = 4;
+}
+
+message V2UserResetPasswordRequest {
+    string old_password = 1;
+    string password = 2;
+    string user_id = 3;
+    string client_type_id = 4;
+    string environment_id = 5;
+    string project_id = 6;
+    string node_type = 7;
+    string resource_environment_id = 8;
+    int32 resource_type = 9;
+}
+
+message GetUserProjectClientTypesResponse {
+    repeated string client_type_ids = 1;
+}

@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package new_function_service;
+option go_package="genproto/new_function_service";
+import "google/protobuf/empty.proto";
+
+
+
+service FunctionPingService {
+    rpc Ping (google.protobuf.Empty) returns (PingResponse) {}
+}
+
+message PingResponse {
+    string message = 1;
+}

@@ -1,0 +1,411 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "company.proto";
+import "projects_service.proto";
+import "integration_resource_service.proto";
+
+service ResourceService {
+    rpc AddResource(AddResourceRequest) returns (AddResourceResponse) {}
+    rpc ConfigureResource(ConfigureResourceRequest) returns (ConfigureResourceResponse) {}
+    rpc RemoveResource(RemoveResourceRequest) returns (EmptyProto) {}
+    rpc UpdateResource(UpdateResourceRequest) returns (ResourceWithoutPassword) {}
+    rpc GetResource(GetResourceRequest) returns (Resource) {}
+    rpc GetResourceList(GetResourceListRequest) returns (GetResourceListResponse) {}
+    rpc CreateResource(CreateResourceReq) returns (CreateResourceRes) {}
+    rpc AddResourceInUcode(AddResourceInUcodeRequest) returns (AddResourceResponse) {}
+    rpc ReconnectResource(ReconnectResourceRequest) returns (ReconnectResourceRes) {}
+    rpc GetResourceWithPath(GetResourceRequest) returns (GetResourceWithPathResponse) {}
+    rpc AutoConnect(GetProjectsRequest) returns (GetResourceManyWithPathResponse) {}
+    rpc AutoConnectByProjectId(AutoConnectByProjectIdRequest) returns (AutoConnectByProjectIdResponse) {}
+    rpc GetResourceByResEnvironId(GetResourceRequest) returns (ResourceWithoutPassword) {}
+    rpc GetResEnvByResIdEnvId(GetResEnvByResIdEnvIdRequest) returns (ResourceEnvironment) {}
+    rpc GetResourceById(GetResourceEnvironmentReq) returns(ResourceEnvironmentWithPassword) {}
+    // resource environment
+    rpc UpsertResourceEnvironment(UpsertResourceEnvironmentRequest) returns (UpsertResourceEnvironmentResponse) {}
+    rpc GetResourceEnvironment(GetResourceEnvironmentReq) returns (ResourceEnvironment) {}
+    rpc GetDefaultResourceEnvironment(GetDefaultResourceEnvironmentReq) returns (ResourceEnvironment) {}
+    rpc GetListResourceEnvironment(GetListResourceEnvironmentReq) returns (GetListResourceEnvironmentRes) {}
+    rpc GetListConfiguredResourceEnvironment(GetListConfiguredResourceEnvironmentReq) returns (GetListConfiguredResourceEnvironmentRes) {}
+    rpc GetResourceByEnvID(GetResourceByEnvIDRequest) returns (GetResourceByEnvIDResponse) {}
+    rpc GetServiceResources(GetServiceResourcesReq) returns (GetServiceResourcesRes) {}
+    rpc SetDefaultResource(SetDefaultResourceReq) returns(SetDefaultResourceRes) {}
+
+    rpc CreateVariableResource(CreateVariableResourceRequest) returns(VariableResource) {}
+    rpc GetVariableResourceList(GetVariableResourceListRequest) returns (GetVariableResourceListResponse) {}
+    rpc GetSingleVariableResource(PrimaryKeyVariableResource) returns (VariableResource) {}
+    rpc UpdateVariableResource(UpdateVariableResourceRequest) returns (Empty) {}
+    rpc DeleteVariableResource(PrimaryKeyVariableResource) returns (Empty) {}
+
+    rpc AddResourceToProject(AddResourceToProjectRequest) returns(ProjectResource) {}
+    rpc GetProjectResourceList(GetProjectResourceListRequest) returns (ListProjectResource) {}
+    rpc GetSingleProjectResouece(PrimaryKeyProjectResource) returns (ProjectResource) {}
+    rpc UpdateProjectResource(ProjectResource) returns (Empty) {}
+    rpc DeleteProjectResource(PrimaryKeyProjectResource) returns (Empty) {}
+}
+
+message UpdateVariableResourceRequest {
+    string project_resource_id = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    repeated VariableResource variables = 4;
+}
+
+message PrimaryKeyProjectResource {
+    string id = 1;
+    string environment_id = 2;
+    string project_id = 3;
+}
+
+message AddResourceToProjectRequest {
+    string name = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    ResourceType type = 4;
+    repeated VariableResource variables = 5;
+    IntegrationResource integration_resource = 6;
+    Settings settings = 7;
+    string role_id = 8;
+    string user_id = 9;
+    string client_type_id = 10;
+    string company_id = 11;
+    string node_type = 12;
+}
+
+message GetProjectResourceListRequest {
+    string project_id = 1;
+    string environment_id = 2;
+    ResourceType type = 3;
+}
+
+message ProjectResource {
+    string name = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    string type = 4;
+    string id = 5;
+    repeated VariableResource variables = 6;
+    Settings settings = 7;
+    int32 resource_type = 8; 
+}
+
+message ListProjectResource {
+    repeated ProjectResource resources = 1;
+}
+
+message PrimaryKeyVariableResource {
+    string id = 1;
+    string key = 2;
+    string project_id = 3;
+    string environment_id = 4;
+    string project_resource_id = 5;
+}
+
+message GetVariableResourceListResponse {
+    repeated VariableResource variables = 1;
+}
+
+message GetVariableResourceListRequest {
+    string project_id = 1;
+    string environment_id = 2;
+    string project_resource_id = 3;
+}
+
+message CreateVariableResourceRequest {
+    string project_id = 1;
+    string environment_id = 2;
+    string key = 3;
+    string value = 4;
+    string project_resource_id = 5;
+}
+
+message VariableResource {
+    string id = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    string key = 4;
+    string value = 5;
+    string project_resource_id = 6;
+
+}
+
+message GetResourceListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string project_id = 3;
+    string search = 4;
+    string environment_id = 5;
+}
+
+message GetResourceListResponse {
+    int32 count = 1;
+    repeated Resource resources = 2;
+}
+
+message CreateResourceReq {
+    string project_id = 1;
+    Resource resource = 2;
+    string company_id = 3;
+    string user_id = 4;
+    string environment_id = 5;
+    string node_type = 6;
+    string client_type_id = 7;
+    string role_id = 8;
+    string name = 9;
+    bool is_superset = 10;
+}
+
+message CreateResourceRes {
+    string project_id = 1;
+    ServiceType service_type = 2;
+    ResourceType resource_type = 3;
+    string company_id = 4;
+    string node_type = 5;
+    string id = 6;
+}
+
+message SetDefaultResourceReq {
+    string project_id = 1;
+    string environment_id = 2;
+    string resource_id = 3;
+    ServiceType service_type = 4;
+}
+
+message SetDefaultResourceRes {
+    string project_id = 1;
+    string environment_id = 2;
+    string resource_id = 3;
+    ServiceType service_type = 4;
+}
+
+message GetServiceResourcesReq {
+    string project_id = 1;
+    string environment_id = 2;
+}
+
+message GetServiceResourcesRes {
+    message ServiceTypeResources {
+        message ServiceResources {
+            string resource_id = 1;
+            bool is_configured = 2;
+            bool default = 3;
+            string title = 4;
+            ResourceType resource_type = 5;
+        }
+        ServiceType service_type = 1;
+        repeated ServiceResources resource = 2;
+    }
+    repeated ServiceTypeResources service_resources = 1;
+}
+
+message GetDefaultResourceEnvironmentReq {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+}
+
+message GetListConfiguredResourceEnvironmentReq {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+}
+
+message GetListConfiguredResourceEnvironmentRes {
+    message resource_environment {string id = 1;
+        string project_id = 2;
+        string resource_id = 3;
+        string environment_id = 4;
+        bool is_configured = 5;
+        int32 resource_type = 6;
+        int32 service_type = 7;
+        string name = 8;
+        string display_color = 9;
+        string description = 10;
+    }
+    repeated resource_environment data = 1;
+}
+
+message GetListResourceEnvironmentReq {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+}
+
+message GetListResourceEnvironmentRes {
+    repeated ResourceEnvironment data = 1;
+    int32 count = 2;
+}
+
+message GetResourceEnvironmentReq {
+    string id = 1;
+    string project_id = 2;
+    string resource_id = 3;
+    string environment_id = 4;
+    string username = 5;
+}
+
+message UpsertResourceEnvironmentRequest {
+    repeated ResourceEnvironment resource_environments = 1;
+}
+
+message UpsertResourceEnvironmentResponse {
+    repeated ResourceEnvironment resource_environments = 1;
+}
+
+message UpdateResourceRequest {
+    string id = 1;
+    string project_id = 2;
+    string environment_id = 3;
+    ResourceType resource_type = 4;
+    string title = 5;
+    bool is_configured = 6;
+    Resource.Credentials credentials = 7;
+    bool default = 8;
+    string node_type = 9;
+}
+
+message UpdateResourceResponse {
+    string project_id = 1;
+    repeated Resource resources = 2;
+    string company_id = 3;
+    string user_id = 4;
+    repeated ResourceEnvironment resource_environments = 5;
+}
+
+message AutoConnectRes {
+    message ReconnectReq {
+        message Credentials {
+            string host = 1;
+            string port = 2;
+            string username = 3;
+            string password = 4;
+            string database = 5;
+        }
+        string k8s_namespace = 1;
+        string project_id = 2;
+        string secret_path = 3;
+        Credentials credentials = 4;
+        string user_id = 5;
+    }
+    repeated ReconnectReq data = 1;
+}
+
+message GetResEnvByResIdEnvIdRequest {
+    string resource_id = 1;
+    string environment_id = 2;
+}
+
+
+message GetResourceByEnvIDRequest {
+    string env_id = 1;
+}
+
+message GetResourceByEnvIDResponse {
+    message Resourse {
+        string id = 1;
+    }
+
+    Resourse resource = 1;
+    ResourceEnvironmentWithPassword resource_environment = 2;
+    string project_status = 3;
+}
+
+
+message ResourceEnvironmentWithPassword {
+    message Credentials {
+        string host = 1;
+        string port = 2;
+        string username = 3;
+        string database = 4;
+        string password = 5;
+    }
+    ServiceType service_type = 1;
+    ResourceType resource_type = 2;
+    Credentials credentials = 3;
+    string id = 4;
+    string project_id = 5;
+    string path = 6;
+    string title = 7;
+    string resource_id = 8;
+    string environment_id = 9;
+    string version_id = 10;
+    string node_type = 11;
+    string resource_environment_id = 12;
+}
+
+message Settings {
+    SmsCredentials sms = 1;
+    SMTPCredentials smtp = 2;
+    Github github = 3;
+    Gitlab gitlab = 4;
+    SupersetCredentials superset = 5;
+    PostgresCredentials postgres = 6;
+    MetabaseCredentials metabase = 7;
+    MailchimpCredentials mailchimp = 8;
+}
+
+message SmsCredentials {
+    string originator = 1;
+    string login = 2;
+    string password = 3;
+    string default_otp = 4;
+    int32 number_of_otp = 5;
+    string service_type = 6;
+}
+
+message SMTPCredentials {
+    string email = 1;
+    string password = 2;
+    int32 number_of_otp = 3;
+    string default_otp = 4;
+}
+
+message SupersetCredentials {
+    string username = 1;
+    string password = 2;
+    string url = 3;
+}
+
+message MetabaseCredentials {
+    string username = 1;
+    string password = 2;
+    string url = 3;
+}
+
+message PostgresCredentials {
+    string username = 1;
+    string password = 2;
+    string host = 3;
+    string port = 4;
+    string database = 5;
+    string connection_name = 6;
+    bool ssl_mode = 7;
+}
+
+message MailchimpCredentials {
+    string api_key = 1;
+    string from_email = 2;
+    int32 number_of_otp = 3;
+    string default_otp = 4;
+}
+
+message Github {
+    string username = 1;
+    string token = 2;
+    int32 number_of_otp = 3;
+    string default_otp = 4;
+}
+
+message Gitlab {
+    string username = 1;
+    string token = 2;
+    string refresh_token = 3;
+    int64 created_at = 4;
+    int32 expires_in = 5; 
+    string base_url = 6;
+}

@@ -1,0 +1,207 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "pg_field.proto";
+
+service SectionService {
+    rpc GetAll(GetAllSectionsRequest) returns (GetAllSectionsResponse) {}
+    rpc Update(UpdateSectionsRequest) returns (google.protobuf.Empty) {}
+    rpc GetAllViewRelations(GetAllSectionsRequest) returns (GetAllViewRelationsResponse) {}
+    rpc GetViewRelation(GetAllSectionsRequest) returns (GetViewRelationResponse) {}
+    rpc UpsertViewRelations(UpsertViewRelationsBody) returns (google.protobuf.Empty) {}
+}
+
+message Section {
+    string id = 1;
+    int32 order = 2;
+    string column = 3;
+    string label = 4;
+    repeated FieldForSection fields = 5;
+    string icon = 6;
+    bool is_summary_section = 7;
+    google.protobuf.Struct attributes = 8;
+}
+
+message ViewRelationReq {
+    int32 order = 1;
+    string relation_id = 2;
+    string view_relation_type = 3;
+}
+
+message RelationForTable {
+    string id = 1;
+    string table_from = 2; 
+    string table_to = 3;
+    string type = 4;
+    repeated string view_fields = 5;
+    bool editable = 6;
+    repeated SummaryInSection summaries = 7;
+}
+
+message SummaryInSection {
+    string field_name = 1;
+    string formula_name = 2;
+    google.protobuf.Struct attributes = 3;
+}
+
+message ViewRelation {
+    string id = 1;
+    int32 order = 2;
+    string label = 3;
+    RelationForTable relation = 4;
+    string icon = 5;
+    bool is_editable = 6;
+    string function_path = 7;
+    google.protobuf.Struct attributes = 8;
+}
+
+message RelationForSection {
+    string id = 1;
+    TableForSection table_from = 2; 
+    TableForSection table_to = 3;
+    string type = 4;
+    repeated Field view_fields = 5;
+    repeated SummaryInSection summaries = 6;
+    bool editable = 7;
+    bool is_editable = 8;
+    string title = 9;
+    repeated string columns = 10;
+    repeated QuickFilterForSection quick_filters = 11;
+    repeated string group_fields = 12;
+    string relation_table_slug = 13;
+    string view_type = 14;
+    string relation_field_slug = 15;
+    google.protobuf.Struct permission = 16;
+    repeated ActionRelationForSection action_relations = 17;
+    string default_limit = 18;
+    bool multiple_insert = 19;
+    repeated string updated_fields = 20;
+    string multiple_insert_field = 21;
+    bool creatable = 22;
+    bool default_editable = 23;
+    string function_path = 24;
+    bool relation_buttons = 25;
+    google.protobuf.Struct attributes = 26;
+}
+
+message ActionRelationForSection {
+    string key = 1;
+    string value = 2;
+}
+
+message IncrementIDForSection {
+    bool with_increment_id = 1;
+    int32 digit_number = 2;
+}
+
+message QuickFilterForSection {
+    string field_id = 1;
+    string default_value = 2;
+}
+
+
+message TableForSection {
+    string id = 1;
+    string label = 2;
+    string description = 3;
+    string slug = 4;
+    bool show_in_menu = 5;
+    string icon = 6;
+    string subtitle_field_slug = 7;
+    bool is_editable = 8;
+    bool is_own_table = 9;
+    IncrementIDForSection increment_id = 10;
+}
+
+message NewViewRelation {
+    int32 order = 1;
+    RelationForSection relation = 2;
+    string view_relation_type = 3;
+}
+
+message GetViewRelationResponse {
+    string id = 1;
+    string table_slug = 2;
+    repeated NewViewRelation relations = 3;
+}
+
+message GetAllViewRelationsResponse {
+    int32 count = 1;
+    repeated ViewRelation view_relations = 2;
+}
+
+message UpsertViewRelationsBody {
+    string table_slug = 1;
+    repeated ViewRelationReq view_relations = 2;
+    string project_id = 3;
+    int64 commit_id = 4;
+    string commit_guid = 5;
+}
+
+
+message SectionResponse {
+    string id = 1;
+    int32 order = 2;
+    string column = 3;
+    string label = 4;
+    repeated FieldResponse fields = 5;
+    string icon = 6;
+    bool is_summary_section = 7;
+    google.protobuf.Struct attributes = 8;
+}
+
+message FieldResponse {
+    string id = 1;
+    string default = 2;
+    string type = 3;
+    string index = 4;
+    string label = 5;
+    string slug = 6;
+    string table_id = 7;
+    bool required = 8;
+    int32 column = 9;
+    int32 order = 10;
+    google.protobuf.Struct attributes = 11;
+    string relation_type = 12;
+    bool show_label = 13;
+    bool enable_multilanguage = 14;
+    bool is_editable = 15;
+    bool is_visible_layout = 16;
+} 
+
+message FieldForSection {
+    string id = 1;
+    int32 column = 2;
+    int32 order = 3;
+    string field_name = 4;
+    string relation_type = 5;
+    bool show_label = 6;
+    google.protobuf.Struct attributes = 7;
+    bool is_visible_layout = 8;
+}
+
+message UpdateSectionsRequest {
+    repeated Section sections = 1;
+    string table_id = 2;
+    string project_id = 3;
+    int64 commit_id = 4;
+    string commit_guid = 5;
+}
+
+message GetAllSectionsResponse {
+    repeated SectionResponse sections = 1;
+}
+
+message GetAllSectionsRequest {
+    string table_id = 1;
+    string table_slug = 2;
+    string role_id = 3;
+    string project_id = 4;
+    string version_id = 5;
+    string tab_id = 6;
+    string language_setting = 7;
+}

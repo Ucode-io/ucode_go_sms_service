@@ -1,0 +1,36 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+import "google/protobuf/struct.proto";
+
+service ExcelService {
+    rpc ExcelRead(ExcelReadRequest) returns (ExcelReadResponse) {};
+    rpc ExcelToDb(ExcelToDbRequest) returns (ExcelToDbResponse) {};
+}
+
+message ExcelReadRequest {
+    string id = 1;
+    string project_id = 2;
+    string type = 3;
+}
+
+message ExcelToDbRequest {
+    string id = 1;
+    string table_slug = 2;
+    google.protobuf.Struct data = 3;
+    string project_id = 4;
+    string type = 5;
+}
+
+message ExcelToDbResponse {
+
+}
+
+message ExcelReadResponse {
+    repeated string rows = 1;
+    string type = 2;
+}
+message Row {
+    repeated string column = 1;
+}

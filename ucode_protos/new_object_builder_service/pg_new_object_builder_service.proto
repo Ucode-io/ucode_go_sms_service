@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package new_object_builder_service;
+
+option go_package="genproto/new_object_builder_service";
+
+import "pg_table.proto";
+import "pg_menu.proto";
+import "pg_section.proto";
+import "pg_relation.proto";
+import "pg_view.proto";
+import "pg_login.proto";
+import "pg_excel.proto";
+import "pg_custom_event.proto";
+import "pg_function.proto";
+import "pg_builder_project.proto";
+import "pg_layout.proto";
+import "pg_custom_error_message.proto";
+import "pg_file.proto";
+import "pg_version_history.proto";
+import "pg_field.proto";
+import "pg_version.proto";
+import "pg_1c_folder.proto";
+import "pg_csv.proto";
+import "pg_language.proto";

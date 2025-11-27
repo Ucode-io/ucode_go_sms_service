@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package genproto;
+option go_package="genproto/sms_service";
+
+import "sms_message.proto";
+import "google/protobuf/empty.proto";
+
+service SmsService {
+  rpc Send(Sms) returns (GetSmsRequest) {}
+  rpc ConfirmOtp(ConfirmOtpRequest) returns(google.protobuf.Empty) {}
+}

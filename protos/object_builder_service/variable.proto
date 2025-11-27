@@ -1,0 +1,60 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+
+
+service VariableService {
+    rpc Create(CreateVariableRequest) returns (Variable) {}
+    rpc GetList(GetAllVariablesRequest) returns (GetAllVariablesResponse) {}
+    rpc GetSingle(VariablePrimaryKey) returns (Variable) {}
+    rpc Update(Variable) returns (google.protobuf.Empty) {}
+    rpc Delete(VariablePrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+
+message CreateVariableRequest {
+    string slug = 1;
+    string type = 2;
+    string label = 3;
+    string dashboard_id = 4;
+    string field_slug  = 5;
+    repeated string options = 6;
+    string view_field_slug = 7;
+    string query = 8;
+    string project_id = 9;
+    int64 commit_id = 10;
+    string commit_guid = 11;
+}
+
+
+message Variable {
+    string id = 1;
+    string slug = 2;
+    string type = 3;
+    string label = 4;
+    string dashboard_id = 5;
+    string field_slug  = 6;
+    repeated string options = 7;
+    string view_field_slug = 8;
+    string query = 9;
+    string project_id = 10;
+}
+
+message GetAllVariablesResponse {
+    repeated Variable variables = 1;
+    int32 count = 2;
+}
+
+message GetAllVariablesRequest {
+    string slug = 1;
+    string dashboard_id = 2;
+    string project_id = 3;
+}
+
+message VariablePrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}

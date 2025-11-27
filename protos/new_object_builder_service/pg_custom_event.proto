@@ -1,0 +1,80 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "pg_function.proto";
+
+
+service CustomEventService {
+    rpc Create(CreateCustomEventRequest) returns (CustomEvent) {}
+    rpc GetList(GetCustomEventsListRequest) returns (GetCustomEventsListResponse) {}
+    rpc GetSingle(CustomEventPrimaryKey) returns (CustomEvent) {}
+    rpc Update(CustomEvent) returns (google.protobuf.Empty) {}
+    rpc Delete(CustomEventPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc UpdateByFunctionId(UpdateByFunctionIdRequest) returns (google.protobuf.Empty) {}
+}
+
+
+message CreateCustomEventRequest {
+    string table_slug = 1;
+    string icon = 2;
+    string event_path = 3;
+    string label = 4;
+    string url = 5;
+    bool disable = 6;
+    string project_id = 7;
+    int64 commit_id = 8;
+    string commit_guid = 9;
+    string method = 10;
+    string action_type = 11;
+    google.protobuf.Struct attributes = 12;
+    string env_id = 13;
+    string path = 14;
+}
+
+message CustomEvent {
+    string id = 1;
+    string table_slug = 2;
+    string event_path = 3;
+    string label = 4;
+    string icon = 5;
+    string url = 6;
+    bool disable = 7;
+    repeated Function functions = 8;
+    string project_id = 9;
+    string method = 10;
+    string action_type =11;
+    google.protobuf.Struct attributes = 12;
+    google.protobuf.Struct action_permission = 13;
+    string env_id = 14;
+    string path = 15;
+}
+
+message GetCustomEventsListResponse {
+    repeated CustomEvent custom_events = 1;
+    int32 count = 2;
+}
+
+message GetCustomEventsListRequest {
+    string table_slug = 1;
+    string project_id = 2;
+    string method = 3;
+    string role_id = 4;
+    string version_id = 5;
+}   
+
+message CustomEventPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+}
+
+message UpdateByFunctionIdRequest {
+    string function_id = 1;
+    repeated string object_ids = 2;
+    string field_slug = 3;
+    string project_id = 4;
+}

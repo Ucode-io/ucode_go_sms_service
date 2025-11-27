@@ -1,0 +1,319 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "google/protobuf/empty.proto";
+import "company.proto";
+
+service BillingService {
+    // Fare Methods
+    rpc CreateFare(CreateFareRequest) returns (Fare);
+    rpc GetFare(PrimaryKey) returns (Fare);
+    rpc ListFares(ListRequest) returns (ListFareResponse);
+    rpc UpdateFare(Fare) returns (Fare);
+    rpc DeleteFare(PrimaryKey) returns (google.protobuf.Empty);
+    rpc CalculatePrice(CalculatePriceRequest) returns (CalculatePriceResponse);
+
+    // Fare Item Methods
+    rpc CreateFareItem(CreateFareItemRequest) returns (FareItem);
+    rpc GetFareItem(PrimaryKey) returns (FareItem);
+    rpc ListFareItems(ListRequest) returns (ListFareItemsResponse);
+    rpc UpdateFareItem(FareItem) returns (FareItem);
+    rpc DeleteFareItem(PrimaryKey) returns (google.protobuf.Empty);
+
+    // Transaction Methods
+    rpc CreateTransaction(CreateTransactionRequest) returns (Transaction);
+    rpc GetTransaction(PrimaryKey) returns (Transaction);
+    rpc ListTransactions(ListRequest) returns (ListTransactionsResponse);
+    rpc UpdateTransaction(Transaction) returns (Transaction);
+
+    // Compare
+    rpc CompareFunction(CompareFunctionRequest) returns (CompareFunctionResponse);
+    rpc UpsertMonthlyRequest(MonthlyRequest) returns (google.protobuf.Empty);
+
+    // Payme
+    rpc CreateCard(CreateProjectCardRequest) returns (ProjectCard);
+    rpc GetProjectCard(PrimaryKey) returns (ProjectCard);
+    rpc GetVerifyCode(GetVerifyCodeRequest) returns (GetVerifyCodeResponse);
+    rpc Verify(VerifyRequest) returns (ProjectCard);
+    rpc UpdateProjectCard(ProjectCard) returns (ProjectCard);
+    rpc ListProjectCards(ListRequest) returns (ListProjectCardsResponse);
+    rpc ReceiptPay(ReceiptPayRequest) returns (ReceiptPayResponse);
+    rpc DeleteProjectCard(PrimaryKey) returns (google.protobuf.Empty);
+
+    // Subscription
+    rpc GetSubscription(PrimaryKey) returns (Subscription);
+    rpc UpdateSubscription(Subscription) returns (Subscription);
+
+    //Discount
+    rpc ListDiscounts(ListRequest) returns (ListDiscountsResponse);
+
+    // Update subscription end date
+    rpc UpdateSubscriptionEndDate(UpdateSubscriptionEndDateReq) returns (UpdateSubscriptionEndDateResp);
+}
+
+message UpdateSubscriptionEndDateReq {
+  string project_id = 1;
+  string end_date = 2;
+}
+
+message UpdateSubscriptionEndDateResp {
+  string project_id = 1;
+  string end_date = 2;
+  string status = 3;
+}
+
+
+message CompareFunctionRequest {
+    string fare_id = 1;
+    string type = 2;
+    int32 count = 3;
+}
+
+message CompareFunctionResponse {
+    bool has_access = 1;
+}
+
+// Fare
+message Fare {
+    string id = 1;
+    string name = 2;
+    string currency_id = 3;
+    double price = 4;
+    int32 trial_days = 5;
+    int32 disactivate_day = 6;
+    string description = 7;
+    repeated FareItemPrice fare_item_prices = 8;
+    string created_at = 9;
+    string updated_at = 10;
+    bool is_public = 11;
+    Currency currency = 14;
+    Subscription subscription = 15;
+}
+
+// FareItem
+message FareItem {
+    string id = 1;
+    string name = 2;
+    string parent_id = 3;
+    string info = 4;
+    string type = 5; 
+}
+
+// FareItemPrice
+message FareItemPrice {
+    string id = 1;
+    string fare_id = 2;
+    string fare_item_id = 3;
+    string value = 4;
+    double price = 5;
+    double over_limit_price = 6;
+    FareItem fare_item = 7;
+}
+
+// Transaction
+message Transaction {
+    string id = 1;
+    string project_id = 2;
+    string creator_id = 3;
+    string comment = 4;
+    string payment_status = 5;
+    double amount = 6;
+    string transaction_type = 7;
+    string creator_type = 8;
+    string currency_id = 9;
+    string acceptor_id = 10;
+    string fare_id = 11;
+    string created_at = 12;
+    string accepted_at = 13;
+    Currency currency = 14;
+    string receipt_file = 15;
+    int64 order_id = 16;
+    string payment_type = 17;
+    string subscription_id = 18;
+    Fare fare = 19;
+    string project_name = 20;
+    string external_id = 21;
+    string card_id = 22;
+    double rate = 23;
+}
+
+// Requests and Responses
+
+// Fare
+message CreateFareRequest {
+    string name = 1;
+    string currency_id = 2;
+    double price = 3;
+    int32 trial_days = 4;
+    int32 disactivate_day = 5;
+    string description = 6;
+    repeated FareItemPrice fare_item_prices = 7;
+    bool is_public = 8;
+    Currency currency = 9;
+}
+
+message PrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message ListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string project_id = 4;
+}
+
+message ListFareResponse {
+    repeated Fare fares = 1;
+    int32 count = 2;
+}
+
+
+// Fare Item
+message CreateFareItemRequest {
+    string name = 1;
+    string parent_id = 2;
+    string info = 3;
+    string type = 4;
+}
+
+message ListFareItemsResponse {
+    repeated FareItem fare_items = 1;
+    int32 count = 2;
+}
+
+// Transactions
+message CreateTransactionRequest {
+    string project_id = 1;
+    string creator_id = 2;
+    string comment = 3;
+    string payment_status = 4;
+    double amount = 5;
+    string transaction_type = 6;
+    string creator_type = 7;
+    string currency_id = 8;
+    string acceptor_id = 9;
+    string fare_id = 10;
+    string receipt_file = 11;
+    int64 order_id = 12;
+    string payment_type = 13;
+    string subscription_id = 14;
+    string external_id = 15;
+    string card_id = 16;
+    double rate = 17;
+}
+
+message ListTransactionsResponse {
+    repeated Transaction transactions = 1;
+    int32 count = 2;
+}
+
+message MonthlyRequest {
+    string project_id = 1;
+    int32 count = 2; 
+}
+
+message CreateProjectCardRequest {
+    string pan = 1;
+    string expire = 2;
+    string payme_token = 3;
+    string project_id = 4;
+    string type = 5;
+    string external_id = 6;
+    bool verify = 7;
+}
+
+message ProjectCard {
+    string id = 1;
+    string pan = 2;
+    string expire = 3;
+    string payme_token = 4;
+    bool verify = 5;
+    string project_id = 6;
+    string created_at = 7;
+    string updated_at = 8;
+    string external_id = 9;
+    string type = 10;
+}
+
+message GetVerifyCodeRequest {
+    string pan = 1;
+    string expire = 2;
+    string project_id = 3;
+}
+
+message GetVerifyCodeResponse {
+    bool sent = 1;
+    string phone = 2;
+    int64 wait = 3;
+    string project_card_id = 4;
+}
+
+message VerifyRequest {
+    string project_card_id = 1;
+    string code = 2;
+    string project_id = 3;
+}
+
+message ListProjectCardsResponse {
+    repeated ProjectCard project_cards = 1;
+    int32 count = 2;
+}
+
+message ReceiptPayRequest {
+    string project_card_id = 1;
+    double amount = 2;
+    string project_id = 3;
+    string user_id = 4;
+}
+
+message ReceiptPayResponse {
+    string pan = 1;
+    double amount = 2;
+    string status = 3;
+    string organization = 4;
+}
+
+message Subscription {
+    string id = 1;
+    string project_id = 2;
+    string fare_id = 3;
+    string status = 4;
+    string start_date = 5;
+    string end_date = 6;
+    string renewal_date = 7;
+    string type = 8;
+    string discount_id = 9;
+}
+
+message CalculatePriceRequest {
+    string project_id = 1;
+    string fare_id = 2;
+    string discount_id = 3;
+}
+
+message CalculatePriceResponse {
+    double calculated_price = 1;
+    double project_balance = 2;
+    double credit_limit = 3;
+    double discount_percentage = 4;
+    string start_date = 5;
+    string end_date = 6;
+    double currency_rate = 7;
+    string renewal_date = 8;
+    double calculated_price_without_rate = 9;
+}
+
+message Discount {
+    string id = 1;
+    int32 months = 2;
+    double value = 3;
+}
+
+message ListDiscountsResponse {
+    repeated Discount discounts = 1;
+    int32 count = 2;
+}

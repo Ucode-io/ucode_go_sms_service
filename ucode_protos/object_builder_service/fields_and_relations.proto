@@ -1,0 +1,27 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "field.proto";
+import "relation.proto";
+
+service FieldAndRelationService {
+    rpc CreateFieldsAndRelations(CreateFieldsAndRelationsRequest) returns (CreateFieldsAndRelationsResponse) {}
+}
+
+message CreateFieldsAndRelationsRequest {
+    string project_id = 1;
+    string version_id = 2;
+    string commit_id = 3;
+    string table_id = 4;
+    repeated CreateFieldRequest fields = 5;
+    repeated CreateRelationRequest relations = 6;
+    
+    
+}
+
+message CreateFieldsAndRelationsResponse {
+}

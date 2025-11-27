@@ -1,0 +1,1 @@
+ALTER TABLE "sms_send" DROP COLUMN IF EXISTS "originator" VARCHAR;

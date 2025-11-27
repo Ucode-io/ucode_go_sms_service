@@ -1,0 +1,70 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "object_builder.proto";
+
+service FileService {
+    rpc Create(CreateFileRequest) returns (File) {}
+    rpc GetList(GetAllFilesRequest) returns (GetAllFilesResponse) {}
+    rpc GetSingle(FilePrimaryKey) returns (File) {}
+    rpc Update(File) returns (google.protobuf.Empty) {}
+    rpc Delete(FileDeleteRequest) returns (google.protobuf.Empty) {}
+    rpc WordTemplate(CommonMessage) returns (WordTemplateResponse) {}
+}
+
+
+message CreateFileRequest {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    repeated string tags = 4;
+    string storage = 5;
+    string file_name_disk  = 6;
+    string file_name_download = 7;
+    string link = 8;
+    int64 file_size = 9;
+    string project_id = 10;
+}
+
+
+message File {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    repeated string tags = 4;
+    string storage = 5;
+    string file_name_disk  = 6;
+    string file_name_download = 7;
+    string link = 8;
+    int64 file_size = 9;
+    string project_id = 10;
+}
+
+message GetAllFilesResponse {
+    repeated File files = 1;
+    int32 count = 2;
+}
+
+message GetAllFilesRequest {
+    string search = 1;
+    string sort = 2;
+    string project_id = 3;
+    string folder_name = 4;
+}
+
+message FilePrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message FileDeleteRequest {
+    repeated string ids = 1;
+    string project_id = 2;
+}
+
+message WordTemplateResponse {
+    repeated string files = 1;
+}

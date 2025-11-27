@@ -1,0 +1,28 @@
+syntax="proto3";
+// 
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "google/protobuf/struct.proto";
+
+service EImzoService {
+    rpc GetChallenge(GetChallengeRequest) returns (GetChallengeResponse) {}
+    rpc ExtractUserFromPKCS7(ExtractUserFromPKCS7Request) returns (ExtractUserFromPKCS7Response) {}
+}
+
+message GetChallengeRequest {}
+
+message GetChallengeResponse {
+  string challenge = 1;
+  int32 ttl = 2;
+  int32 status = 3;
+  string message = 4;
+}
+
+message ExtractUserFromPKCS7Request {
+  string pkcs7 = 1;
+}
+
+message ExtractUserFromPKCS7Response {
+  google.protobuf.Struct data = 1;
+}

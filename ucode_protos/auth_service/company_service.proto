@@ -1,0 +1,58 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+import "google/protobuf/empty.proto";
+
+
+service CompanyService {
+    rpc Register(RegisterCompanyRequest) returns (CompanyPrimaryKey) {}
+    rpc Update(UpdateCompanyRequest) returns (google.protobuf.Empty) {}
+    rpc Remove(CompanyPrimaryKey) returns (google.protobuf.Empty) {}
+    rpc GetList(GetComapnyListRequest) returns (GetListCompanyResponse) {}
+    rpc GetByID(CompanyPrimaryKey) returns (Company) {}
+}
+
+
+
+message RegisterCompanyRequest {
+    message RegisterUserInfo {
+        string phone = 1;
+        string email = 2;
+        string login = 3;
+        string password = 4;
+        string expires_at = 5;
+    }
+    message GoogleToken {
+        string access_token = 1;
+        string token_type = 2;
+        string scope = 3;        
+    }
+    string name = 1;
+    RegisterUserInfo user_info = 2;
+    GoogleToken googleToken = 3;
+    string fare_id = 4;
+}
+
+message CompanyPrimaryKey {
+    string id = 1;
+}
+
+message UpdateCompanyRequest {
+    string id = 1;
+    string name = 2;
+}
+
+message GetComapnyListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string user_id = 4;
+}
+
+message GetListCompanyResponse {
+    int32 count = 1;
+    repeated Company companies = 2;
+}

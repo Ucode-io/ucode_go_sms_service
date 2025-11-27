@@ -1,0 +1,48 @@
+syntax="proto3";
+
+package new_object_builder_service;
+option go_package="genproto/new_object_builder_service";
+
+
+import "pg_object_builder.proto";
+import "google/protobuf/struct.proto";
+
+service ItemsService {
+    rpc Create(CommonMessage) returns (CommonMessage) {}
+    rpc GetSingle(CommonMessage) returns (CommonMessage) {}
+    rpc GetList(CommonMessage) returns (CommonMessage) {}
+    rpc Update(CommonMessage) returns (CommonMessage) {}
+    rpc Delete(CommonMessage) returns (CommonMessage) {}
+    rpc ManyToManyAppend(ManyToManyMessage) returns (CommonMessage) {}
+    rpc ManyToManyDelete(ManyToManyMessage) returns (CommonMessage) {}
+    rpc MultipleUpdate (CommonMessage) returns (CommonMessage) {}
+    rpc MultipleInsert (CommonMessage) returns (CommonMessage) {}
+    rpc DeleteMany(CommonMessage) returns (CommonMessage) {}
+    rpc GetSlugsByTable(GetSlugsByTableReq) returns (GetSlugsByTableResp) {}
+    rpc UpdateBySearch(UpdateBySearchReq) returns (CommonMessage) {}
+    rpc DeleteBySearch(DeleteBySearchReq) returns (CommonMessage) {}
+    rpc UpsertMany(CommonMessage) returns (CommonMessage) {}
+    rpc UpdateByUserIdAuth(CommonMessage) returns (CommonMessage) {}
+}
+
+message GetSlugsByTableReq {
+    string table_label = 1;
+    string project_id = 2;
+}
+
+message GetSlugsByTableResp {
+    string table_slug = 1;
+    repeated string slugs = 2;
+}
+
+message UpdateBySearchReq {
+    google.protobuf.Struct data = 1;
+    string project_id = 2;
+    string table = 3;
+}
+
+message DeleteBySearchReq {
+    google.protobuf.Struct data = 1;
+    string project_id = 2;
+    string table = 3;
+}

@@ -1,0 +1,343 @@
+syntax="proto3";
+
+package auth_service;
+option go_package="genproto/auth_service";
+
+import "auth.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service ClientService {
+    rpc CreateClientPlatform(CreateClientPlatformRequest) returns (ClientPlatform) {}
+    rpc GetClientPlatformByID(ClientPlatformPrimaryKey) returns (ClientPlatform) {}
+    rpc GetClientPlatformByIDDetailed(ClientPlatformPrimaryKey) returns (ClientPlatformDetailedResponse) {}
+    rpc GetClientPlatformList(GetClientPlatformListRequest) returns (GetClientPlatformListResponse) {}
+    rpc UpdateClientPlatform(UpdateClientPlatformRequest) returns (ClientPlatform) {}
+    rpc DeleteClientPlatform(ClientPlatformPrimaryKey) returns (google.protobuf.Empty) {}
+    
+    rpc CreateClientType(CreateClientTypeRequest) returns (ClientType) {}
+    rpc GetClientTypeByID(ClientTypePrimaryKey) returns (CompleteClientType) {}
+    rpc GetClientTypeList(GetClientTypeListRequest) returns (GetClientTypeListResponse) {}
+    rpc UpdateClientType(UpdateClientTypeRequest) returns (ClientType) {}
+    rpc DeleteClientType(ClientTypePrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc AddClient(AddClientRequest) returns (Client) {}
+    rpc UpdateClient(UpdateClientRequest) returns (Client) {}
+    rpc RemoveClient(ClientPrimaryKey) returns (Client) {}
+    rpc GetClientList(GetClientListRequest) returns (GetClientListResponse) {}
+
+    rpc GetClientMatrix(GetClientMatrixRequest) returns (GetClientMatrixResponse) {}
+
+    rpc AddRelation(AddRelationRequest) returns (Relation) {}
+    rpc UpdateRelation(UpdateRelationRequest) returns (Relation) {}
+    rpc RemoveRelation(RelationPrimaryKey) returns (Relation) {}
+    
+    rpc AddUserInfoField(AddUserInfoFieldRequest) returns (UserInfoField) {}
+    rpc UpdateUserInfoField(UpdateUserInfoFieldRequest) returns (UserInfoField) {}
+    rpc RemoveUserInfoField(UserInfoFieldPrimaryKey) returns (UserInfoField) {}
+    
+    rpc V2CreateClientPlatform(CreateClientPlatformRequest) returns (CommonMessage) {}
+    rpc V2GetClientPlatformByID(ClientPlatformPrimaryKey) returns (CommonMessage) {}
+    rpc V2GetClientPlatformByIDDetailed(ClientPlatformPrimaryKey) returns (CommonMessage) {}
+    rpc V2GetClientPlatformList(GetClientPlatformListRequest) returns (CommonMessage) {}
+    rpc V2UpdateClientPlatform(UpdateClientPlatformRequest) returns (CommonMessage) {}
+    rpc V2DeleteClientPlatform(ClientPlatformPrimaryKey) returns (google.protobuf.Empty) {}
+    
+    rpc V2CreateClientType(V2CreateClientTypeRequest) returns (CommonMessage) {}
+    rpc V2GetClientTypeByID(V2ClientTypePrimaryKey) returns (CommonMessage) {}
+    rpc V2GetClientTypeList(V2GetClientTypeListRequest) returns (CommonMessage) {}
+    rpc V2UpdateClientType(V2UpdateClientTypeRequest) returns (CommonMessage) {}
+    rpc V2DeleteClientType(V2ClientTypePrimaryKey) returns (google.protobuf.Empty) {}
+
+    rpc V2AddClient(AddClientRequest) returns (CommonMessage) {}
+    rpc V2UpdateClient(UpdateClientRequest) returns (CommonMessage) {}
+    rpc V2RemoveClient(ClientPrimaryKey) returns (CommonMessage) {}
+    rpc V2GetClientList(GetClientListRequest) returns (CommonMessage) {}
+
+    rpc V2GetClientMatrix(GetClientMatrixRequest) returns (CommonMessage) {}
+
+    rpc V2AddRelation(AddRelationRequest) returns (Relation) {}
+    rpc V2UpdateRelation(UpdateRelationRequest) returns (Relation) {}
+    rpc V2RemoveRelation(RelationPrimaryKey) returns (Relation) {}
+    
+    rpc V2AddUserInfoField(AddUserInfoFieldRequest) returns (CommonMessage) {}
+    rpc V2UpdateUserInfoField(UpdateUserInfoFieldRequest) returns (CommonMessage) {}
+    rpc V2RemoveUserInfoField(UserInfoFieldPrimaryKey) returns (CommonMessage) {}
+}
+
+message CommonMessage {
+    string table_slug = 1;
+    google.protobuf.Struct data = 2;
+}
+
+message ClientPlatformDetailedResponse {
+    string id = 1;
+    string project_id = 2;
+    string name = 3;
+    string subdomain = 4;
+    
+    repeated Permission permissions = 5;
+    repeated Scope scopes = 6;
+}
+
+message GetClientMatrixRequest {
+    string project_id = 1;
+}
+
+message GetClientMatrixResponse {
+    repeated ClientPlatform client_platforms = 1;
+    repeated ClientType client_types = 2;
+    repeated Client clients = 3;
+}
+
+message CreateClientPlatformRequest {
+    string project_id = 2;
+    string name = 3;
+    string subdomain = 4;
+    int32 resource_type = 5;
+    string node_type = 6;
+}
+
+message ClientPlatformPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    int32 resource_type = 3;
+    string node_type = 4;
+}
+
+message GetClientPlatformListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string project_id = 4;
+    int32 resource_type = 5;
+    string node_type = 6;
+}
+
+message GetClientPlatformListResponse {
+    int32 count = 1;
+    repeated ClientPlatform client_platforms = 2;
+}
+
+message UpdateClientPlatformRequest {
+    string id = 1;
+    string name = 3;
+    string subdomain = 4;
+    repeated string client_type_ids = 5;
+    int32 resource_type = 6;
+    string node_type = 7;
+}
+
+message CreateClientTypeRequest {
+    string name = 2;
+    ConfirmStrategies confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    string project_id = 6;
+    repeated Table tables = 7;
+}
+
+message ClientTypePrimaryKey {
+    string id = 1;
+    string project_id = 2;
+}
+
+message CompleteClientType {
+    ClientType client_type = 1;
+    repeated Relation relations = 2;
+    repeated UserInfoField user_info_fields = 3;
+    repeated Role roles = 4;
+}
+
+message GetClientTypeListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string project_id = 4;
+}
+
+message GetClientTypeListResponse {
+    int32 count = 1;
+    repeated ClientType client_types = 2;
+}
+
+message UpdateClientTypeRequest {
+    string id = 1;
+    string name = 2;
+    ConfirmStrategies confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    repeated Table tables = 6;
+    repeated string client_platform_ids = 7;
+    string project_id = 8;
+    int32 session_limit = 9;
+}
+
+message AddClientRequest {
+    string client_platform_id = 1;
+    string client_type_id = 2;
+    LoginStrategies login_strategy = 3;
+    string login_value = 4;
+    string password = 5;
+    LoginTable login_table = 6;
+    string project_id = 7;
+    string node_type = 8;
+}
+
+message UpdateClientRequest {
+    string client_platform_id = 1;
+    string client_type_id = 2;
+    LoginStrategies login_strategy = 3;
+    string login_value = 4;
+    string password = 5;
+    LoginTable login_table = 6;
+    string project_id = 7;
+    string node_type = 8;
+}
+
+message ClientPrimaryKey {
+    string client_platform_id = 1;
+    string client_type_id = 2;
+    string node_type = 3;
+}
+
+message GetClientListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string project_id = 4;
+    string node_type = 5;
+}
+
+message GetClientListResponse {
+    int32 count = 1;
+    repeated Client clients = 2;
+}
+
+message AddRelationRequest {
+    string client_type_id = 2;
+    RelationTypes type = 3;
+    string name = 4;
+    string description = 5;
+}
+
+message UpdateRelationRequest {
+    string id = 1;
+    string client_type_id = 2;
+    RelationTypes type = 3;
+    string name = 4;
+    string description = 5;
+}
+
+message RelationPrimaryKey {
+    string id = 1;
+}
+
+message AddUserInfoFieldRequest {
+    string client_type_id = 2;
+    string field_name = 3;
+    string field_type = 4;
+    string data_type = 5;
+}
+
+message UpdateUserInfoFieldRequest {
+    string id = 1;
+    string client_type_id = 2;
+    string field_name = 3;
+    string field_type = 4;
+    string data_type = 5;
+}
+
+message UserInfoFieldPrimaryKey {
+    string id = 1;
+}
+
+message LoginTable {
+    string object_id = 1;
+    string table_slug = 2;
+    repeated string view_fields = 3;
+}
+
+message LoginTableRequest {
+    string object_id = 1;
+    string table_slug = 2;
+    repeated string view_fields = 3;
+    string client_id = 4;
+}
+
+message CreateClientTypeRequestToObjService {
+    string name = 2;
+    string confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    string project_id = 6;
+    repeated string client_platform_ids = 7;
+    string table_slug = 8;
+    int32 session_limit = 9;
+    repeated string columns = 10;
+}
+
+message UpdateClientTypeRequestToObjService {
+    string guid = 1;
+    string name = 2;
+    string confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    string project_id = 6;
+    repeated string client_platform_ids = 7;
+    string table_slug = 8;
+}
+
+message V2CreateClientTypeRequest {
+    string name = 2;
+    ConfirmStrategies confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    string project_id = 6;
+    string db_project_id = 7;
+    repeated string client_platform_ids = 8;
+    int32 resource_type = 9;
+    string table_slug = 10;
+    string default_page = 11;
+    string node_type = 12;
+    string resource_envrironment_id = 13;
+    int32 session_limit = 14;
+    repeated string columns = 15;
+}
+
+message V2GetClientTypeListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string project_id = 4;
+    int32 resource_type = 5;
+    repeated string guids = 6;
+    string node_type = 7;
+    string resource_envrironment_id = 8;
+}
+
+message V2UpdateClientTypeRequest {
+    string guid = 1;
+    string name = 2;
+    ConfirmStrategies confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    repeated string client_platform_ids = 7;
+    string project_id = 8;
+    string db_project_id = 9;
+    int32 resource_type = 10;
+    string table_slug = 11;
+    string default_page = 12;
+    string node_type = 13;
+    string resource_envrironment_id = 14;
+    int32 session_limit = 15;
+    repeated string columns = 16;
+}
+
+message V2ClientTypePrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    int32 resource_type = 3;
+    string node_type = 4;
+    string resource_envrironment_id = 5;
+}

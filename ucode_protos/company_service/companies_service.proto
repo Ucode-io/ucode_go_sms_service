@@ -1,0 +1,147 @@
+syntax="proto3";
+
+package company_service;
+option go_package="genproto/company_service";
+
+import "company.proto";
+import "projects_service.proto";
+import "google/protobuf/empty.proto";
+
+
+service CompanyService {
+    rpc Create(CreateCompanyRequest) returns (CreateCompanyResponse) {}
+    rpc GetList(GetCompanyListRequest) returns (GetComanyListResponse) {}
+    rpc GetById(GetCompanyByIdRequest) returns (GetCompanyByIdResponse) {}
+    rpc Update(Company) returns (Company) {}
+    rpc Delete(DeleteCompanyRequest) returns (Empty) {}
+    rpc GetListWithProjects(GetListWithProjectsRequest) returns (GetListWithProjectsResponse) {}
+    rpc GetCompaniesByOwnerId(GetCompaniesByOwnerIdReq) returns (GetCompaniesByOwnerIdRes) {}
+    rpc GetAllMenuTemplate(google.protobuf.Empty) returns (GatAllMenuTemplateResponse) {}
+    rpc GetMenuTemplateById(GetMenuTemplateRequest) returns (MenuTemplate) {}
+    rpc CreateMenuTemplate(CreateMenuTemplateRequest) returns (Empty) {}
+    rpc GetProjectMenuTemplates(GetProjectMenuTemplateRequest) returns (GetProjectMenuTemplateResponse) {}
+    rpc CreateMenuTemplateByTemplateId(CreateMenuTemplateByTemplateIdRequest) returns (Empty) {}
+}
+
+message GetMenuTemplateRequest {
+    string id = 1;
+}
+
+message GatAllMenuTemplateResponse {
+    repeated MenuTemplate menu_templates = 1;
+    int32 count = 2;
+}
+
+message MenuTemplate {
+    string id = 1;
+    string background = 2;
+    string active_background = 3;
+    string text = 4;
+    string active_text = 5;
+    string title = 6;
+}
+
+message GetCompaniesByOwnerIdReq {
+    string id = 1;
+}
+
+message GetCompaniesByOwnerIdRes {
+    repeated Company companies = 1;
+}
+
+message CreateCompanyRequest {
+    string title = 1;
+    string logo = 2;
+    string description = 3;
+    string owner_id = 4;
+}
+
+message Company {
+    string id = 1;
+    string name = 2;
+    string logo = 3;
+    string description = 4;
+    string owner_id = 5;
+}
+
+message CompanyWithProjects {
+    string id = 1;
+    string name = 2;
+    string logo = 3;
+    string description = 4;
+    string owner_id = 5;
+    repeated ProjectWithoutResource projects = 6;
+}
+
+message CreateCompanyResponse {
+    string id = 1;
+}
+
+message GetCompanyListRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string comany_id = 4;
+    string owner_id = 5;
+}
+
+message GetComanyListResponse {
+    int32 count = 1;
+    repeated Company companies = 2;
+}
+
+message GetCompanyByIdRequest {
+    string id = 1;
+}
+
+message GetCompanyByIdResponse {
+    Company company = 1;
+}
+
+message DeleteCompanyRequest {
+    string id = 1;
+}
+
+message GetListWithProjectsRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+    string comany_id = 4;
+    string owner_id = 5;
+}
+
+message GetListWithProjectsResponse {
+    int32 count = 1;
+    repeated CompanyWithProjects companies = 2;
+}
+
+message CreateMenuTemplateRequest {
+    string name = 1;
+    string menu_id = 2;
+    string project_id = 3;
+    string node_type = 4;
+    string data = 5;
+}
+
+message ProjectMenuTemplate {
+    string id = 1;
+    string name = 2;
+    string data = 3;
+}
+
+message GetProjectMenuTemplateRequest {
+    string project_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string search = 4;
+}
+
+message GetProjectMenuTemplateResponse {
+    repeated ProjectMenuTemplate project_menu_templates = 1;
+    int32 count = 2;
+}
+
+message CreateMenuTemplateByTemplateIdRequest {
+    string project_id = 1;
+    string template_id = 2;
+}

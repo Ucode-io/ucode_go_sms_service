@@ -1,0 +1,92 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
+
+service ObjectBuilderService {
+    rpc Create(CommonMessage) returns (CommonMessage) {}
+    rpc GetSingle(CommonMessage) returns (CommonMessage) {}
+    rpc GetList(CommonMessage) returns (CommonMessage) {}
+    rpc GetList2(CommonMessage) returns (CommonMessage) {}
+    rpc GetSingleSlim(CommonMessage) returns (CommonMessage) {}
+    rpc GetListSlim(CommonMessage) returns (CommonMessage) {}
+    rpc GetListSlimV2(CommonMessage) returns (CommonMessage) {}
+    rpc GetRecursiveList(CommonMessage) returns (CommonMessage) {}
+    rpc Update(CommonMessage) returns (CommonMessage) {}
+    rpc Delete(CommonMessage) returns (CommonMessage) {}
+    rpc ManyToManyAppend(ManyToManyMessage) returns (CommonMessage) {}
+    rpc ManyToManyDelete(ManyToManyMessage) returns (CommonMessage) {}
+    rpc GetTableDetails(CommonMessage) returns (CommonMessage) {}
+    rpc GetListInExcel(CommonMessage) returns (CommonMessage) {}
+    rpc Batch(BatchRequest) returns (CommonMessage) {}
+    rpc MultipleUpdate (CommonMessage) returns (CommonMessage) {}
+    rpc MultipleInsert (CommonMessage) returns (CommonMessage) {}
+    rpc GetFinancialAnalytics(CommonMessage) returns (CommonMessage) {}
+    rpc GetGroupReportTables(CommonMessage) returns (CommonMessage) {}
+    rpc GetGroupByField(CommonMessage) returns (CommonMessage) {}
+    rpc DeleteMany(CommonMessage) returns (CommonMessage) {}
+    rpc GroupByColumns(CommonMessage) returns (CommonMessage) {}
+    rpc CopyFromProject(CopyFromProjectRequestMessage) returns (CommonMessage) {}
+    rpc GetListWithOutRelations(CommonMessage) returns (CommonMessage) {}
+    rpc GetListAggregation(CommonMessage) returns (CommonMessage) {}
+    rpc GetListRelationTabInExcel(CommonMessage) returns (CommonMessage) {}
+    rpc UpsertMany(CommonMessage) returns (CommonMessage) {}
+    rpc UpdateByUserIdAuth(CommonMessage) returns (CommonMessage) {}
+    rpc AgGridTree(CommonMessage) returns (CommonMessage) {}
+    rpc GetBoardStructure(CommonMessage) returns (CommonMessage) {}
+    rpc GetBoardData(CommonMessage) returns (CommonMessage) {}
+}
+
+message CommonMessage {
+    string table_slug = 1;
+    google.protobuf.Struct data = 2;
+    string project_id = 3;
+    string version_id = 4;
+    string custom_message = 5;
+    bool is_cached = 6;
+    bool blocked_login_table = 7;
+    bool blocked_builder = 8;
+    string env_id = 9;
+    string company_project_id = 10;
+}
+message ManyToManyMessage {
+    string table_from = 1;
+    string table_to = 2;
+    string id_from = 3;
+    repeated string id_to = 4;
+    string project_id = 5;
+    string version_id = 6;
+}
+
+message BatchRequest {
+    string table_slug = 1;
+    google.protobuf.Struct data = 2;
+    repeated string updated_fields = 3;
+    string project_id = 4;
+}
+
+message MenuRequest {
+    string label = 1;
+    string icon = 2;
+    string table_id = 3;
+    string layout_id = 4;
+    string parent_id = 5;
+    string type = 6;
+    string id = 7;
+    string project_id = 8;
+    google.protobuf.Struct data = 9;
+    string microfrontend_id = 10;
+    string webpage_id = 11;
+    google.protobuf.Struct attributes = 12;
+    string report_setting_id = 13;
+    string pivot_template_id = 15;
+}
+
+message CopyFromProjectRequestMessage {
+    string project_id = 1;
+    string from_project_id = 2;
+    repeated MenuRequest menus = 3;
+}

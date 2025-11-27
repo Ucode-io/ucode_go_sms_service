@@ -1,0 +1,89 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/empty.proto";
+import "version.proto";
+
+service VersionHistoryService {
+    rpc Create(CreateVersionHistoryRequest) returns (google.protobuf.Empty) {}
+    rpc GatAll(GetAllRquest) returns (ListVersionHistory) {}
+    rpc Update(UsedForEnvRequest) returns (google.protobuf.Empty) {}
+    rpc GetByID(VersionHistoryPrimaryKey) returns (VersionHistory) {}
+}
+
+message GetAllRquest {
+    string project_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+    string type = 4;
+    string env_id = 5;
+    string from_date = 6;
+    string to_date = 7;
+    string user_info = 8;
+    string api_key = 9;
+    bool order_by = 10;
+    repeated string version_ids = 11;
+    string collection = 12;
+    string action_type = 13;
+}
+
+message VersionHistory {
+    string id = 1;
+    string action_source = 2;
+    string action_type = 3;
+    string previus = 4;
+    string current = 5;
+    map<string, bool> used_envrironments = 6;
+    string date = 7;
+    string user_info = 8;
+    string request = 9;
+    string response = 10;
+    string api_key = 11;
+    string type = 12;
+    string table_slug = 13;
+    string version_id = 14;
+    Version version = 15;
+}
+
+message CreateVersionHistoryRequest {
+    string id = 1;
+    string action_source = 2;
+    string action_type = 3;
+    string previus = 4;
+    string current = 5;
+    map<string, bool> used_envrironments = 6;
+    string date = 7;
+    string user_info = 8;
+    string request = 9;
+    string project_id = 10;
+    string response = 11;
+    string api_key = 12;
+    string type = 13;
+    string table_slug = 14;
+    string version_id = 15;
+}
+
+message ListVersionHistory {
+    repeated VersionHistory histories = 1;
+    string project_id = 2;
+    int32 count = 3;
+}
+
+message UsedForEnvRequest {
+    repeated string ids = 1;
+    string env_id = 2;
+    string project_id = 3;
+}
+
+message UserInfo {
+    string id = 1;
+    string name = 2;
+}
+
+message VersionHistoryPrimaryKey {
+    string id = 1;
+    string project_id = 2;
+    string env_id = 3;
+}

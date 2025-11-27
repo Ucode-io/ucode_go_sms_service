@@ -1,0 +1,197 @@
+syntax = "proto3";
+
+package object_builder_service;
+
+option go_package="genproto/object_builder_service";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
+import "permission.proto";
+
+service LoginService {
+    rpc Login (LoginRequest) returns (V2LoginResponse) {}
+    rpc LoginData (LoginDataReq) returns (LoginDataRes) {}
+    rpc LoginWithOtp (PhoneOtpRequst) returns (V2LoginResponse) {}
+    rpc LoginWithEmailOtp (EmailOtpRequest) returns (V2LoginResponse) {}
+    rpc GetUserUpdatedPermission (GetUserUpdatedPermissionRequest) returns(V2LoginResponse) {}
+    rpc LoginDataByUserId (LoginDataReq) returns (LoginDataRes) {}
+    rpc GetConnetionOptions (GetConnetionOptionsRequest) returns (GetConnectionOptionsResponse) {}
+    rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (LoginDataRes) {}
+}
+
+message GetConnetionOptionsRequest {
+    string connection_id = 1;
+    string resource_environment_id = 2;
+    string user_id = 3;
+    string node_type = 4;
+}
+
+message GetConnectionOptionsResponse {
+    string table_slug = 1;
+    google.protobuf.Struct data = 2;
+}
+
+message LoginDataReq {
+    string user_id = 1;
+    string client_type = 2;
+    string project_id = 3;
+    string resource_environment_id = 4;
+    string node_type = 5;
+    string password = 6;
+}
+
+message LoginDataRes {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    string user_id = 4;
+    Role role = 5;
+    repeated RecordPermission permissions = 6;
+    string login_table_slug = 7;
+    repeated RecordPermission app_permissions = 8;
+    GlobalPermission global_permission = 9;
+    google.protobuf.Struct user_data = 10;
+    string user_id_auth = 11;
+    bool compare_password = 12;
+}
+
+enum ConfirmStrategies {
+    UNDECIDED = 0;
+    PHONE = 1;
+    EMAIL = 2;
+}
+
+message GetUserUpdatedPermissionRequest {
+    string client_type_id = 1;
+    string user_id = 2;
+    string project_id = 3;
+}
+
+message EmailOtpRequest {
+    string email = 1;
+    string client_type = 2;
+    string project_id = 3;
+    string table_slug = 4;
+    string guid = 5;
+    string node_type = 6;
+}
+
+message PhoneOtpRequst {
+    string phone_number = 1;
+    string client_type = 2;
+    string project_id = 3;
+    string node_type = 4;
+}
+
+message LoginRequest {
+    string password = 1;
+    string login = 2;
+    string client_type = 3;
+    string login_strategy = 4;
+    string project_id = 5;
+    string node_type = 6;
+}
+
+message ClientPlatform {
+    string guid = 1;
+    string project_id = 2;
+    string name = 3;
+    string subdomain = 4;
+}
+
+message ClientType {
+    string guid = 1;
+    string name = 2;
+    ConfirmStrategies confirm_by = 3;
+    bool self_register = 4;
+    bool self_recover = 5;
+    string project_id = 6;
+    repeated TableClientType tables = 7;
+    string default_page = 8;
+    int32 session_limit = 9;
+}
+
+message Role {
+    string guid = 1;
+    string client_type_id = 2;
+    string name = 3;
+    string client_platform_id = 4;
+    string project_id = 5;
+}
+
+message RecordPermission {
+    string guid = 1;
+    string client_type_id = 2;
+    string role_id = 3;
+    string table_slug = 4;
+    string read = 5;
+    string write = 6;
+    string update = 7;
+    string delete = 8;
+    string automation = 9;
+    string language_btn = 10;
+    string settings = 11;
+    string share_modal = 12;
+    string view_create = 13;
+    string pdf_action = 14;
+    string add_field = 15;
+    string add_filter = 16;
+    string field_filter = 17;
+    string fix_column = 18;
+    string tab_group = 19;
+    string columns = 20;
+    string group = 21;
+    string excel_menu = 22;
+    string search_button = 23;
+}
+
+message TableClientType {
+    string slug = 1;
+    string view_slug = 2;
+    string label = 3;
+    google.protobuf.Struct data = 4;
+    string icon = 5;
+    string view_label = 6;
+}
+
+message User {
+    string guid = 1;
+    string project_id = 2;
+    string client_platform_id = 3;
+    string client_type_id = 4;
+    string role_id = 5;
+    string phone = 6;
+    string email = 7;
+    string login = 8;
+    string password = 9;
+    int32 active = 10;
+    string expires_at = 11;
+    string created_at = 12;
+    string updated_at = 13;
+    string name = 14;
+    string photo_url = 15;
+    string tin = 16;
+}
+
+message V2LoginResponse {
+    bool user_found = 1;
+    ClientPlatform client_platform = 2;
+    ClientType client_type = 3;
+    string user_id = 4;
+    Role role = 5;
+    repeated RecordPermission permissions = 6;
+    string login_table_slug = 7;
+    repeated RecordPermission app_permissions = 8;
+    google.protobuf.Struct addational_table = 9;
+    GlobalPermission global_permission = 10;
+    google.protobuf.Struct user_data = 11;
+    string user_id_auth = 12;
+}
+
+message UpdateUserPasswordRequest {
+    string client_type_id = 1;
+    string guid = 2;
+    string resource_environment_id = 3;
+    string password = 4;
+    string node_type = 5;
+}

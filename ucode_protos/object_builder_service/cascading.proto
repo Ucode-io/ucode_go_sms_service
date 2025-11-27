@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package object_builder_service;
+option go_package="genproto/object_builder_service";
+
+import "object_builder.proto";
+
+service CascadingService {
+    rpc GetCascadings (GetCascadingRequest) returns (CommonMessage) {}
+}
+
+
+message GetCascadingRequest {
+    string table_slug = 1;
+    string project_id = 2;
+}
